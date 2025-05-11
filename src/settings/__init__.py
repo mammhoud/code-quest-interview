@@ -32,3 +32,4 @@ from .database import *
 from .auth import *
 from .middleware import *
 from .templates import *
+from .rest import *

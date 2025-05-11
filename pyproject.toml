@@ -1,0 +1,147 @@
+[project]
+dynamic = ["version"]
+requires-python = ">=3.10"
+license = "mit"
+keywords = []
+authors = [
+  { name = "mammhoud", email = "Mahmoud.Ezzat.Moustafa@Gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+name = "test"
+description = ""
+readme = "README.md"
+dependencies = [
+    "colorlog>=6.9.0",
+    "django-allauth>=65.2.0",
+    "django-debug-toolbar>=4.4.6",
+    "django-environ>=0.11.2",
+    "django-extensions>=3.2.3",
+    "django-filter>=24.3",
+    "django-gulp>=4.1.0",
+    "django-harlequin>=1.4.0",
+    "django-mkdocs>=0.1.2",
+    "django-structlog>=9.0.0",
+    "django-unfold>=0.41.0",
+    "django>=5.1.2",
+    "djangorestframework>=3.16.0",
+    "gunicorn>=23.0.0",
+    "markdown>=3.8",
+    "pandas>=2.2.3",
+    "pillow>=11.0.0",
+    "pydot>=3.0.2",
+    "pygraphviz>=1.14",
+    "python-decouple>=3.8",
+    "python-dotenv>=1.0.1",
+    "pyyaml>=6.0.2",
+    "ruff>=0.7.1",
+    "selenium>=4.26.1",
+    "shortuuid>=1.0.13",
+    "structlog>=24.4.0",
+    "uvicorn>=0.32.1",
+    "whitenoise>=6.8.2",
+]
+
+
+[tool.coverage.run]
+source_pkgs = ["core", "tests"]
+branch = true
+parallel = true
+omit = [
+  "core/__about__.py",
+]
+
+[tool.coverage.paths]
+core = ["src/*","*/packages/*", "*/core/*"]
+tests = ["tests", "*/core/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+case-sensitive = true
+
+[tool.black]
+target-version = ["py311"]
+line-length = 120
+
+
+[tool.ruff]
+# Set the maximum line length to 79.
+line-length = 110
+ignore = [
+    "E501", # line too long, handled by black
+    "B905", # zip() without strict=True
+    "C901", # too complex
+    "I001", # Auto organize import
+    "F403", # Import Into if condition Block
+    "F405", # object listing on schema api blocks
+    "F811", # var with only one char (_)
+    "B904", # except str expr formatter
+    ]
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by docker.
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
+# Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
+# overlap with the use of a formatter, like Black, but we can override this behavior by
+# explicitly adding the rule.
+
+extend-select = [
+    "E501", # line too long, handled by black
+    "B905", # zip() without strict=True
+    "C901", # too complex
+    "I001", # Auto organize import
+    "F403", # Import Into if condition Block
+]
+
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+
+[tool.uv]
+dev-dependencies = [
+    "appmap>=2.1.8",
+]

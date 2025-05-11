@@ -1,0 +1,79 @@
+version: "3.5"
+
+services:
+  backend:
+    container_name: backend
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/serverdockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - web-network
+    # depends_on:
+      # - db
+      # - rabbitmq
+    labels:
+      # Need to explicitly enable because providersdocker.exposedByDefault=false
+      - "traefik.enable=true"
+      - "traefikdocker.network=web-network"
+      # Port declaration for which dev port Traefik should forward requests on to. It's
+      # not strictly required here - you could just skip this label and run dev on port
+      # 80 and everything would just work. But if you ultimately end up running multiple
+      # websites (i.e. multiple dev containers) on a single server, it can be helpful
+      # to have them on separate, explicit ports like this.
+      - "traefik.port=8000"
+      - "traefik.http.routers.localserver.rule=Host(`dev.localhost`)" # change dev if there are subdomain with different name
+      - "traefik.http.routers.localserver.entrypoints=web"
+      # Use HTTPS
+      - "traefik.http.routers.webserver.entrypoints=websecure"
+      - "traefik.http.routers.webserver.rule=Host(`dev.localhost`)"
+      - "traefik.http.routers.production.tls.certresolver=le-resolver"
+      # Redirect from HTTP to HTTPS
+      - "traefik.http.middlewares.protocolredirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.localserver.middlewares=protocolredirect"
+      - "traefik.http.routers.production.priority=1"
+
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    command:
+      - "--log.level=DEBUG"
+      - "--providersdocker=true"
+      - "--providersdocker.exposedByDefault=false"
+      - "--providersdocker.network=web-network"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.le-resolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.le-resolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.le-resolver.acme.email=admin@yourdomain.com"
+      - "--certificatesresolvers.le-resolver.acme.storage=/letsencrypt/acme.json"
+      - "--api.insecure=true" # Enable the Traefik dashboard without authentication
+      - "--api.dashboard=true"
+      - "--api.debug=true"
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Port for Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/letsencrypt:/letsencrypt
+    networks:
+      - web-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.routers.staticfiles.priority=4"
+
+
+networks:
+  # db_network:
+  #   driver: bridge
+  web-network:
+    driver: bridge
