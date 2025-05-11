@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,26 +14,63 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('slug', models.SlugField(blank=True, unique=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('bio', models.TextField(blank=True, max_length=500, null=True)),
-                ('birth_date', models.DateField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('full_name', models.CharField(blank=True, max_length=60, null=True)),
-                ('profile_image', models.ImageField(blank=True, default='default-avatar.svg', null=True, upload_to='users/')),
-                ('cover_image', models.ImageField(blank=True, default='default-cover.png', null=True, upload_to='users/')),
-                ('language', models.CharField(choices=[('en', 'English'), ('es', 'Spanish'), ('fr', 'French'), ('ar', 'Arabic')], default='en', max_length=50)),
-                ('notes', models.TextField(blank=True, null=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='%(class)s_user', to=settings.AUTH_USER_MODEL, verbose_name='Created By User')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("slug", models.SlugField(blank=True, unique=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("bio", models.TextField(blank=True, max_length=500, null=True)),
+                ("birth_date", models.DateField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("full_name", models.CharField(blank=True, max_length=60, null=True)),
+                (
+                    "profile_image",
+                    models.ImageField(
+                        blank=True, default="default-avatar.svg", null=True, upload_to="users/"
+                    ),
+                ),
+                (
+                    "cover_image",
+                    models.ImageField(blank=True, default="default-cover.png", null=True, upload_to="users/"),
+                ),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "English"), ("es", "Spanish"), ("fr", "French"), ("ar", "Arabic")],
+                        default="en",
+                        max_length=50,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True, null=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="%(class)s_user",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Created By User",
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'User Profile',
-                'verbose_name_plural': 'Profile',
-                'db_table': 'Profiles',
+                "verbose_name": "User Profile",
+                "verbose_name_plural": "Profile",
+                "db_table": "Profiles",
             },
         ),
     ]

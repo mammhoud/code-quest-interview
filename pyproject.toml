@@ -34,6 +34,7 @@ dependencies = [
     "django-structlog>=9.0.0",
     "django-unfold>=0.41.0",
     "django>=5.1.2",
+    "djangorestframework-simplejwt>=5.5.0",
     "djangorestframework>=3.16.0",
     "gunicorn>=23.0.0",
     "markdown>=3.8",
