@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     # "rest_framework_simplejwt", hashed to be use dj_rest_auth because it more flexible and easy to use with django-allauth
+    "graphene_django",
     "core",
     "apis",
 ] + [  # admin app addition tweaks { docs: https://unfoldadmin.com/docs }

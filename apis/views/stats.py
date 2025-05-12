@@ -14,11 +14,12 @@ class StatListCreateView(generics.ListCreateAPIView):
     using a filter backend to filter by profile ID or evaluation.
     and order the output by total_records, total_exercises, or evaluation.
     Example: /api/stats/?ordering=total_records
-    
+
     Optionally filter by profile ID or evaluation.
     Example: /api/stats/?profile=3&evaluation=5
-    
+
     """
+
     queryset = Stat.objects.all()
     serializer_class = StatSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -31,9 +32,10 @@ class StatListCreateView(generics.ListCreateAPIView):
 class StatRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a stat instance.
-    using a permission class to allow only the owner to update or delete their own stats also admin user that created with 
+    using a permission class to allow only the owner to update or delete their own stats also admin user that created with
     createsuperuser command.
     """
+
     queryset = Stat.objects.all()
     permission_classes = [IsAdminUser, IsOwnerOrReadOnly]
     serializer_class = StatSerializer

@@ -7,5 +7,5 @@ TIME_ZONE = "Africa/Cairo"
 
 USE_I18N = True
 
-
 USE_TZ = True
+

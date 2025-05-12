@@ -33,9 +33,14 @@ else:
     }
 
 
+CACHES_PORT = env("CACHES_PORT", default=6379)
+CACHES_HOST = env("CACHES_HOST", default="localhost")
+CACHES_DB = env("CACHES_DB", default=0)
+CACHES_NAME = env("CACHES_NAME", default="redis")
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": f"{CACHES_NAME}://{CACHES_HOST}:{CACHES_PORT}/{CACHES_DB}",
     }
 }
+GRAPHENE = {"SCHEMA": "django_root.schema.schema"}
