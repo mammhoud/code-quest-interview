@@ -6,6 +6,7 @@ this repo defined a simple project using django + django rest framework + django
 - `pip install uv`
 - `uv run ./manage makemigrations `
 - `uv run ./manage migrate `
+- `uv run ./manage createsuperuser`
 - `uv run ./manage runserver `
 
 ## apps:

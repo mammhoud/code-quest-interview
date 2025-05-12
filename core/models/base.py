@@ -11,7 +11,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-
 class DefaultBase(models.Model):
     """
     An abstract base model that provides automatic creation and update timestamps.
@@ -42,4 +41,3 @@ class DefaultBase(models.Model):
             else:
                 self.slug = slugify(self.__str__(), "%(class)s")
         super().save(*args, **kwargs)
-

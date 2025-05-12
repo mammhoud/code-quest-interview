@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsUserCreatedOrReadOnly(permissions.BasePermission):
+class IsOwnerOrReadOnly(permissions.BasePermission):
     # Only Users can edit or delete their posts
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed for any request (GET, HEAD, OPTIONS)
@@ -10,3 +10,4 @@ class IsUserCreatedOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the User of a post
         return obj.created_by == request.user
+    
