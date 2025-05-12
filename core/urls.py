@@ -18,4 +18,9 @@ Including another URLconf
 from django.contrib import admin  # Noqa
 from django.urls import path, include  # Noqa
 
-urlpatterns = [path("admin/", admin.site.urls), path("rest-apis/", include("rest_framework.urls"))]
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("apis/", include("apis.routers")),
+    path("apis/", include("rest_framework.urls")),
+]

@@ -3,7 +3,7 @@ from core.models import DefaultBase
 # Create your models here.
 
 
-class Stats(DefaultBase):
+class Stat(DefaultBase):
     """
     Model to store statistics for the application.
     """
@@ -22,4 +22,4 @@ class Stats(DefaultBase):
     evaluation = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"Stats: {self.profile.full_name}, {self.total_records} posts"
+        return f"Stat: {self.profile.full_name}, {self.total_records} posts"

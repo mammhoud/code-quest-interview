@@ -7,7 +7,7 @@ from .models import (
     ExerciseAttendance,
     Friend,
     Record,
-    Stats,
+    Stat,
     Workout,
 )
 
@@ -48,7 +48,7 @@ class RecordAdmin(ModelAdmin):
     list_filter = ("date",)
 
 
-@admin.register(Stats)
+@admin.register(Stat)
 class StatsAdmin(ModelAdmin):
     list_display = ("profile", "total_records", "total_exercises", "total_friends", "evaluation")
     search_fields = ("profile__full_name",)

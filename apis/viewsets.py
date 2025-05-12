@@ -1,22 +1,15 @@
 from rest_framework import routers, viewsets  # Noqa
-from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from .serializers import UserSerializer
-
+from django.contrib.auth import get_user_model
 
 # ViewSets define the view behavior.
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    User = settings.AUTH_USER_MODEL
+# class UserViewSet(viewsets.ModelViewSet):
 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r"users", UserViewSet)
+#     queryset = get_user_model.objects.all()
+#     serializer_class = UserSerializer
 
 

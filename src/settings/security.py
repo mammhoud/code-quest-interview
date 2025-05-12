@@ -39,3 +39,18 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
+
+
+CORS_ALLOWED_ORIGINS = (
+    "http://localhost:8000",
+    "http://localhost:8088",
+)
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://localhost:8088"]
+
+
+# django-allauth configurations
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",  # new
+]

@@ -1,11 +1,23 @@
-# from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets  # Noqa
-from django.conf import settings  # Noqa
 
 
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+from rest_framework import serializers
+
+from core.serializers import ProfileSerializer
+from .models import Stat
+
+class StatSerializer(serializers.ModelSerializer):
+    full_name = ProfileSerializer(read_only=True)
+
+
     class Meta:
-        User = settings.AUTH_USER_MODEL
-        model = User
-        fields = ["url", "username", "email", "is_staff"]
+        model = Stat
+        fields = [
+            'id',
+            'profile',
+            'full_name',
+            'total_records',
+            'total_exercises',
+            'total_friends',
+            'evaluation',
+        ]
+        read_only_fields = ['id', 'full_name']

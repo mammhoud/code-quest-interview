@@ -23,7 +23,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
+SITE_ID=1
 
 from .security import *
 from .apps import *

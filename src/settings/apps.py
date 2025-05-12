@@ -10,7 +10,14 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     # "django.contrib.flatpages",
     "rest_framework",
-    "rest_framework_simplejwt",
+    "corsheaders",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
+    # "rest_framework_simplejwt", hashed to be use dj_rest_auth because it more flexible and easy to use with django-allauth
     "core",
     "apis",
 ] + [  # admin app addition tweaks { docs: https://unfoldadmin.com/docs }
