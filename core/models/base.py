@@ -39,5 +39,7 @@ class DefaultBase(models.Model):
                 self.slug = slugify(self.title, "%(class)s")  # type: ignore
             elif hasattr(self, "title"):
                 self.slug = slugify(self.title, "%(class)s")  # type: ignore
+            else:
+                self.slug = slugify(self.__str__(), "%(class)s")
         super().save(*args, **kwargs)
 
