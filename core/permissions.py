@@ -10,4 +10,3 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the User of a post
         return obj.created_by == request.user
-    
