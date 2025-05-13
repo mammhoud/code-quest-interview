@@ -35,7 +35,7 @@ class DefaultBase(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             if hasattr(self, "name"):
-                self.slug = slugify(self.title, "%(class)s")  # type: ignore
+                self.slug = slugify(self.name, "%(class)s")  # type: ignore
             elif hasattr(self, "title"):
                 self.slug = slugify(self.title, "%(class)s")  # type: ignore
             else:

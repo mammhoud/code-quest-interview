@@ -1,6 +1,5 @@
 from django.db import models
 from core.models import DefaultBase
-# Create your models here.
 
 
 class Stat(DefaultBase):

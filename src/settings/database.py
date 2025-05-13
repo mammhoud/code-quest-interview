@@ -35,12 +35,16 @@ else:
 
 CACHES_PORT = env("CACHES_PORT", default=6379)
 CACHES_HOST = env("CACHES_HOST", default="localhost")
-CACHES_DB = env("CACHES_DB", default=0)
+CACHES_DB = env("CACHES_DB", default=1)
 CACHES_NAME = env("CACHES_NAME", default="redis")
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"{CACHES_NAME}://{CACHES_HOST}:{CACHES_PORT}/{CACHES_DB}",
+        "LOCATION": f"{CACHES_NAME}://{CACHES_HOST}:{CACHES_PORT}",
+        # "OPTIONS": {
+        #     # "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        #     # "TIMEOUT": 60 * 60 * 24,  # 1 day
+        # },
     }
 }
 GRAPHENE = {"SCHEMA": "django_root.schema.schema"}
