@@ -12,9 +12,9 @@ from ..models.exercises import Exercise as exerciseModel
 from ..models.schemas.exercises import *
 from ..models.schemas.exercises import _ExerciseFilter
 from core.exceptions import *
+from core.authentications.ninja import GlobalAuth
 
-
-@api_controller("exercise/", auth=NOT_SET, tags=["Exercise"], permissions=[])
+@api_controller("exercise/", auth=GlobalAuth(), tags=["Exercise"], permissions=[])
 class ExerciseController(ControllerBase):
     @route.get("/list", response={200: List[Exercise]}, permissions=[], throttle=[BurstRateThrottle()])  # noqa: UP006
     def get_exercises(self, filters: _ExerciseFilter = Query(None)):  # noqa: B008

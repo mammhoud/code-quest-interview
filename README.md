@@ -3,6 +3,8 @@
 this repo defined a simple project using django + django rest framework + django unfold
 `src` dir contains a base settings of the project and separated on files to be more readalbe and organized with the same structure of cookiecutters implementation
 
+
+could be running by run shell script `run.sh` after install `uv` package manager or use your package manager like pip with  `requirements.txt`
 - `pip install uv`
 - `uv run ./manage makemigrations `
 - `uv run ./manage migrate `
@@ -10,7 +12,8 @@ this repo defined a simple project using django + django rest framework + django
 - `uv run ./manage runserver `
 
 
-- starting docker with `docker-compose up -d` for run the databases "resis/postgres"
+- starting docker with `docker-compose up -d` for run the databases "redis/postgres"
+
 ## apps:
     - core
     - apis

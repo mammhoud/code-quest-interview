@@ -8,6 +8,7 @@ from ninja_extra import (
 )
 from ninja_jwt.exceptions import ValidationError
 from ninja_jwt.settings import api_settings
+from pprint import pprint
 
 # from ninja.errors import HttpError
 from ninja_jwt.tokens import RefreshToken
@@ -45,7 +46,8 @@ class TokenController(ControllerBase):
 
             # Fetch the parent token (assuming one active refresh token per user)
             tokens_data = user_profile.get_primary_refresh()
-            print(f"Tokens Data: {tokens_data}")
+            print(f"Tokens Data: {tokens_data.token}")
+            pprint(tokens_data, indent=4)
             if not tokens_data:
                 return 404, "No active parent token found for the user."
 
