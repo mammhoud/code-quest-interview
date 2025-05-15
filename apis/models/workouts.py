@@ -1,8 +1,10 @@
 from django.db import models
 from django.db.models import Count
 from ._manager import WorkoutManager
+from core.models import DefaultBase
 
-class Workout(models.Model):
+
+class Workout(DefaultBase):
     title = models.CharField(max_length=255)
     date = models.DateField()
 
@@ -20,16 +22,14 @@ class Workout(models.Model):
     )
 
     objects = WorkoutManager()
+
     def __str__(self):
         return self.title
-
 
     @classmethod
     def get_profile_workouts(cls, profile):
         """
         Get all workouts for a given profile.
         """
-        workouts = cls.objects.filter(exercises__profile=profile)\
-        .annotate(total_exercises=Count("exercises"))\
-        
+        workouts = cls.objects.filter(exercises__profile=profile).annotate(total_exercises=Count("exercises"))
         return workouts

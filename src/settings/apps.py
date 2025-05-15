@@ -8,6 +8,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "django.contrib.sitemaps",
+    "debug_toolbar",
     # "django.contrib.flatpages",
     "rest_framework",
     "corsheaders",
@@ -20,11 +21,12 @@ INSTALLED_APPS = [
     # "dj_rest_auth",
     # "dj_rest_auth.registration",
     "drf_spectacular",
-    'ninja_extra',
+    "ninja_extra",
     # "rest_framework_simplejwt", # hashed to be use dj_rest_auth because it more flexible and easy to use with django-allauth
     "graphene_django",
     "core",
     "apis",
+    "django_structlog",
 ] + [  # admin app addition tweaks { docs: https://unfoldadmin.com/docs }
     "unfold",  # before django.contrib.admin
     "unfold.contrib.filters",  # optional, if special filters are needed

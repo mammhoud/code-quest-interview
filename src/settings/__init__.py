@@ -47,3 +47,7 @@ from .auth import *
 from .middleware import *
 from .templates import *
 from .rest import *
+from .migrations import *
+from .logger import *
+
+from .debug_toolbar import *

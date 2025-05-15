@@ -8,7 +8,6 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 
 class DefaultBase(models.Model):
@@ -17,8 +16,8 @@ class DefaultBase(models.Model):
     """
 
     slug = models.SlugField(unique=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

@@ -11,7 +11,6 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        
         # "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -23,7 +22,14 @@ REST_FRAMEWORK = {
     # "DEFAULT_THROTTLE_RATES": {"anon": "2/minute", "products": "2/minute", "orders": "4/minute"},
 }
 
-
+# django settings.py
+NINJA_EXTRA = {
+    'THROTTLE_RATES': {
+        'burst': '60/min',
+        'sustained': '1001/day'
+    },
+    "NUM_PROXIES": None,
+}
 SPECTACULAR_SETTINGS = {
     # "AUTHENTICATION_CLASSES": (
     #     "rest_framework_simplejwt.authentication.JWTAuthentication",

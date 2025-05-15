@@ -10,6 +10,7 @@ class Exercise(DefaultBase):
     duration = models.IntegerField(help_text=_("Duration in minutes"), blank=True, null=True)
     profile = models.ForeignKey("core.Profile", on_delete=models.CASCADE, related_name="exercises")
     workouts = models.ManyToManyField("Workout", related_name="exercises", blank=True)
+
     objects = WorkoutManager()
 
     def __str__(self):

@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import DefaultBase
+from ._manager import StatManager
 
 
 class Stat(DefaultBase):
@@ -19,6 +20,7 @@ class Stat(DefaultBase):
     total_exercises = models.IntegerField(default=0)
     total_friends = models.IntegerField(default=0)
     evaluation = models.IntegerField(default=0)
+    objects = StatManager()
 
     def __str__(self):
         return f"Stat: {self.profile.full_name}, {self.total_records} posts"

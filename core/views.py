@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView
 import pprint
 from apis.models import Workout
+
+
 class ProfileView(TemplateView):
     template_name = "profile.html"
 
@@ -10,5 +12,5 @@ class ProfileView(TemplateView):
         context["profile"] = self.request.user.profile
         context["workouts"] = Workout.get_profile_workouts(self.request.user.profile)
         print("Workouts: ", context["workouts"])
-        
+
         return context
