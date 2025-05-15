@@ -1,10 +1,11 @@
-from ninja_extra import api_controller, route
-from ninja_extra.security import AsyncHttpBearer
-from ninja.constants import NOT_SET
+from ninja_extra import NinjaExtraAPI
+from ninja.security import HttpBearer
 
 
-class AuthBearer(AsyncHttpBearer):
-    async def authenticate(self, request, token):
-        # await some actions
+class GlobalAuth(HttpBearer):
+    def authenticate(self, request, token):
         if token == "supersecret":
             return token
+
+
+
