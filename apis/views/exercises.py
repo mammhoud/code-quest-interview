@@ -3,7 +3,7 @@ from rest_framework import generics
 from ..models import Exercise
 from ..serializers import ExerciseSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from core.permissions import IsOwnerOrReadOnly
+from core.permissions.rest_framework import IsOwnerOrReadOnly
 
 class ExerciseListCreateView(generics.ListCreateAPIView):
     queryset = Exercise.objects.all()

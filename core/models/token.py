@@ -82,6 +82,15 @@ class Token(models.Model):  # type: ignore
     def __str__(self):
         return f"{self.token_type.title()} Token ({self.jti})"
 
+    @property
+    def profile(self):
+        if self.token_type == self.REFRESH:
+            if len(self.profiles.distinct()) == 1:
+                return self.profiles.first()
+            else:
+                self.profiles.filter(id == self.created_by)
+        else:
+            pass
     # ------------- Validation & State -------------
     def is_valid(self):
         return not self.is_revoked and now() < self.exp

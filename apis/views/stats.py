@@ -5,7 +5,7 @@ from ..serializers import StatSerializer
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from core.permissions import IsOwnerOrReadOnly
+from core.permissions.rest_framework import IsOwnerOrReadOnly
 
 
 class StatListCreateView(generics.ListCreateAPIView):

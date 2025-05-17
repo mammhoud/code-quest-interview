@@ -1,23 +1,18 @@
-from datetime import date
+from django.utils.timezone import datetime
 from typing import Optional
 
 from ninja import FilterSchema, Schema
 
 
-# Nested schema for User (used as a foreign key reference in other schemas)
-class _User(Schema):
-    id: int
-    username: str
-    email: str
-
+from .user import UserSchema as _User
 
 # Profile schema for API responses
 class PatchProfile(Schema):
     # id: int
     user_id: Optional[int]
     bio: Optional[str]
-    birth_date: Optional[date]
-    created_at: date
+    birth_date: Optional[datetime]
+    created_at: Optional[datetime]
     full_name: Optional[str]
     profile_image: Optional[str]
     cover_image: Optional[str]
@@ -30,8 +25,8 @@ class Profile(Schema):
     id: int
     user: _User
     bio: Optional[str]
-    birth_date: Optional[date]
-    created_at: date
+    birth_date: Optional[datetime]
+    created_at: Optional[datetime]
     full_name: Optional[str]
     profile_image: Optional[str]
     cover_image: Optional[str]
@@ -42,7 +37,7 @@ class Profile(Schema):
 # Filter schema for Profile model
 class _ProfileFilter(FilterSchema):
     full_name: Optional[str]
-    birth_date: Optional[date]
+    birth_date: Optional[datetime]
     bio: Optional[str]
     language: Optional[str]
 

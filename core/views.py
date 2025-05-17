@@ -3,7 +3,7 @@ import pprint
 from apis.models import Workout
 from django.urls import reverse_lazy
 
-from django.shortcuts import redirect
+from django.shortcuts import redirect,resolve_url
 from django.template import RequestContext
 # from django
 
@@ -25,4 +25,4 @@ def handler404(request, *args, **argv):
     # response = render_to_response("404.html", {}, context_instance=RequestContext(request))
     # response.status_code = 404
     # return response
-    return redirect(reverse_lazy("admin:index"))
+    return redirect("admin:index")

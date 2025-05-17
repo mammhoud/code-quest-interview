@@ -2,7 +2,7 @@ from django.contrib import admin  # Noqa
 from django.urls import path, include  # Noqa
 
 # from django.template.response import TemplateResponse  # Noqa
-from .views import ProfileView
+from .views import ProfileView, handler404
 from django.conf.urls.static import static
 from django.conf import settings
 from graphene_django.views import GraphQLView
@@ -36,5 +36,4 @@ if "debug_toolbar" in settings.INSTALLED_APPS:
     urlpatterns = DebugToolbarSetup.do_urls(urlpatterns)
 
 
-handler404 = "core.views.handler404"
-handler500 = "core.views.handler404"
+# handler404 = handler500 = handler404

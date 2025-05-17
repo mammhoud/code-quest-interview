@@ -51,10 +51,13 @@ class GlobalAuth(HttpBearer):
                 ## todo add a check for access token and its profile - > primary_token (profile contains its parent)
                 pass
 
-        # Attach to request
+        # Attach to request ,
+        # Could be accessed at permission class with the same keyword (*) ,
+        # and at controller by context.*request
+
         request.user = user
         request.profile = profile
-        request.auth = token
+        request.token = token
         headers = request.headers
         user_secret = headers.get(self.secret_header)
         if user_secret:

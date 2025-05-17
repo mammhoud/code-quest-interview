@@ -4,7 +4,7 @@ from ..models import Workout
 from ..serializers import WorkoutSerializer
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from core.permissions import IsOwnerOrReadOnly
+from core.permissions.rest_framework import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 

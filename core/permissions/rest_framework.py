@@ -1,7 +1,9 @@
 from rest_framework import permissions
 
+from django.http import HttpRequest
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
+
+class IsOwnerOrReadOnly(permissions.BasePermission):  # drf
     # Only Users can edit or delete their posts
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed for any request (GET, HEAD, OPTIONS)

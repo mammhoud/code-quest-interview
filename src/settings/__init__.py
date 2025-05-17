@@ -13,7 +13,7 @@ if CURRENT_ENV == Environment.DEVELOPMENT:
     DEBUG = True
 else:
     DEBUG = False
-DEBUG = False
+# DEBUG = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
