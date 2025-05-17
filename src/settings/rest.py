@@ -1,4 +1,3 @@
-from ninja.security import HttpBearer
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",  # django default pre defined permissions that was created by django-rest-framework
@@ -11,8 +10,8 @@ REST_FRAMEWORK = {
         "rest_framework.filters.OrderingFilter",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "core.authentications.rest_framework.GlobalAuth",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
@@ -25,10 +24,7 @@ REST_FRAMEWORK = {
 
 # django settings.py
 NINJA_EXTRA = {
-    'THROTTLE_RATES': {
-        'burst': '60/min',
-        'sustained': '1001/day'
-    },
+    "THROTTLE_RATES": {"burst": "60/min", "sustained": "1001/day"},
     "NUM_PROXIES": None,
 }
 SPECTACULAR_SETTINGS = {

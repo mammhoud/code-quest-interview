@@ -53,11 +53,11 @@ class Profile(models.Model):
         return f"Profile for {self.user.username}"
 
     # ----------------- Token Helpers -----------------
-    def get_primary_refresh(self):
+    def get_primary_refresh(self):  # used at controllers
         """Return the primary refresh token or None."""
         return self.token
 
-    def set_primary_refresh(self, refresh=None):
+    def set_primary_refresh(self, refresh=None):  # used at signals
         """
         Assign or create a primary refresh token for this profile.
         Returns the assigned Token instance.
@@ -69,22 +69,25 @@ class Profile(models.Model):
         self.save(update_fields=["token"])
         return self.token
 
-    def create_access_token(self):
+    def create_access_token(self):  # not used
         """Generate a new access token linked to the primary refresh token."""
         primary = self.get_primary_refresh()
         if not primary or primary.token_type != Token.REFRESH:
             raise ValueError("Valid primary refresh token required.")
         return Token.create_access_token(self, primary)
 
-    def get_all_access_tokens(self):
-        """Fetch all active access tokens under the primary refresh token."""
-        primary = self.get_primary_refresh()
-        if not primary or primary.token_type != Token.REFRESH:
-            raise ValueError("Valid primary refresh token required.")
-        return Token.get_active_tokens(self.user).filter(token_type=Token.ACCESS)
+    # def get_all_access_tokens(self): # not used
+    #     """Fetch all active access tokens under the primary refresh token."""
+    #     primary = self.get_primary_refresh()
+    #     if not primary or primary.token_type != Token.REFRESH:
+    #         raise ValueError("Valid primary refresh token required.")
+    #     return Token.get_active_tokens(self.user).filter(token_type=Token.ACCESS)
 
-    def revoke_primary(self):
-        """Revoke primary refresh token and its children."""
+    def revoke_primary(self):  # not used
+        """Revoke primary refresh token and its children.
+        could be used by saved auth at jwt/http ninja auth class;
+        with post request to revoke the primary authed token, or block spammed user
+        """
         primary = self.get_primary_refresh()
         if primary:
             primary.revoke()
@@ -93,34 +96,33 @@ class Profile(models.Model):
             return True
         return False
 
-    def revoke_all_tokens(self):
-        """Revoke all tokens (refresh & access) issued by this user."""
-        tokens = Token.objects.filter(created_by=self.user)
-        count = tokens.count()
-        for t in tokens:
-            t.revoke()
-        return count
+    # def revoke_all_tokens(self): # not used
+    #     """Revoke all tokens (refresh & access) issued by this user.
+
+    #       """
+    #     tokens = Token.objects.filter(created_by=self.user)
+    #     count = tokens.count()
+    #     for t in tokens:
+    #         t.revoke()
+    #     return count
 
 
 User = get_user_model()
 
 
+# -------------------- Signals --------------------
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created and not hasattr(instance, "profile"):
-        profile , created = Profile.objects.get_or_create(user=instance)
-        if created:
-            profile.full_name = f"{instance.first_name} {instance.last_name}"
-            profile.token = profile.set_primary_refresh()
-            profile.save()
+def manage_user_profile(sender, instance, created, **kwargs):
+    """
+    Create or update a Profile when a User is saved.
+    - On creation: generate Profile, set full_name, create primary refresh token.
+    - On update: sync full_name.
+    """
+    profile, was_created = Profile.objects.get_or_create(user=instance)
+    profile.full_name = f"{instance.first_name} {instance.last_name}".strip()
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    try:
-        if hasattr(instance, "profile"):
-            instance.profile.full_name = f"{instance.first_name} {instance.last_name}"
-            instance.profile.save()
-        instance.profile.save()
+    if was_created:
+        # Assign initial refresh token
+        profile.token = profile.set_primary_refresh()
 
-    except Profile.DoesNotExist:
-        pass
+    profile.save()

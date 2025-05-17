@@ -1,3 +1,6 @@
+# flake8: noqa
+# isort: skip_file
+
 from pathlib import Path
 
 from src.env import CURRENT_ENV, Environment
@@ -6,12 +9,11 @@ from src.env import CURRENT_ENV, Environment
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
-
 if CURRENT_ENV == Environment.DEVELOPMENT:
     DEBUG = True
 else:
     DEBUG = False
+DEBUG = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/

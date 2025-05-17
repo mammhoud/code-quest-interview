@@ -12,7 +12,7 @@ from ..models.schemas.workouts import _WorkoutFilter
 # from core.base.io.exceptions import *
 
 
-@api_controller("workouts/", auth=NOT_SET, tags=["Workout"], permissions=[])
+@api_controller("workout/", auth=NOT_SET, tags=["Workout"], permissions=[])
 class WorkoutController(ControllerBase):
     @route.get("/list", response={200: List[Workout]}, permissions=[])  # noqa: UP006
     def get_workouts(self, filters: _WorkoutFilter = Query(None)):  # noqa: B008

@@ -1,3 +1,4 @@
+# flake8: noqa
 from datetime import datetime
 from typing import List, Optional, Type
 
@@ -7,7 +8,6 @@ from ninja_extra import status
 from ninja_extra.exceptions import APIException
 from ninja_schema import ModelSchema, Schema, model_validator
 from pydantic import field_validator
-
 
 UserModel = get_user_model()
 
@@ -69,6 +69,7 @@ class UserSchema(ModelSchema):
     """Schema to retrieve user details along with groups."""
 
     groups: List[GroupSchema]
+    email: Optional[str] | None = None  # noqa
 
     class Config:
         model = UserModel

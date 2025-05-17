@@ -1,6 +1,11 @@
 from django.views.generic import TemplateView
 import pprint
 from apis.models import Workout
+from django.urls import reverse_lazy
+
+from django.shortcuts import redirect
+from django.template import RequestContext
+# from django
 
 
 class ProfileView(TemplateView):
@@ -14,3 +19,10 @@ class ProfileView(TemplateView):
         print("Workouts: ", context["workouts"])
 
         return context
+
+
+def handler404(request, *args, **argv):
+    # response = render_to_response("404.html", {}, context_instance=RequestContext(request))
+    # response.status_code = 404
+    # return response
+    return redirect(reverse_lazy("admin:index"))

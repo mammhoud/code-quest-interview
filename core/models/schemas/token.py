@@ -85,3 +85,11 @@ class RefreshTokenSchema(Schema):
 class TokenListResponse(Schema):
     parent: RefreshTokenSchema
     children: List[AccessTokenSchema]
+
+
+class PatchTokenUpdate(Schema):
+    refresh_Token: Optional[str] = None
+    access_Token: Optional[str] = None
+    
+    username: Optional[str] = None
+    password: Optional[str] = None

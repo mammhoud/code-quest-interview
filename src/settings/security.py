@@ -1,12 +1,15 @@
 from datetime import timedelta
 
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-ipuq)$7$z^$*@c)&^+m-j2*s62@vvjc!0yw2bh)vjovfi-4b6x"
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+]
 
 
 ## refrence

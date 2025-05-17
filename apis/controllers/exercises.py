@@ -14,9 +14,10 @@ from ..models.schemas.exercises import _ExerciseFilter
 from core.exceptions import *
 from core.authentications.ninja import GlobalAuth
 
+
 @api_controller("exercise/", auth=GlobalAuth(), tags=["Exercise"], permissions=[])
 class ExerciseController(ControllerBase):
-    @route.get("/list", response={200: List[Exercise]}, permissions=[], throttle=[BurstRateThrottle()])  # noqa: UP006
+    @route.get("/list", response={200: List[Exercise], 404: Error}, permissions=[], throttle=[BurstRateThrottle()])  # noqa: UP006
     def get_exercises(self, filters: _ExerciseFilter = Query(None)):  # noqa: B008
         """
         Get a list of exercises with optional filtering.
@@ -55,7 +56,7 @@ class ExerciseController(ControllerBase):
 
         return 201, obj
 
-    @route.get("/{exercise_id}", response={200: Exercise}, permissions=[])  # noqa: UP006
+    @route.get("/get/{exercise_id}", response={200: Exercise}, permissions=[])  # noqa: UP006
     def get_exercise(self, request, exercise_id: int):
         """
         Get a specific exercise by ID.
@@ -63,7 +64,7 @@ class ExerciseController(ControllerBase):
         exercise = get_object_or_404(exerciseModel, id=exercise_id)
         return exercise
 
-    @route.patch("/{exercise_id}", response={200: Exercise}, permissions=[])  # noqa: UP006
+    @route.patch("/update/{exercise_id}", response={200: Exercise}, permissions=[])  # noqa: UP006
     def update_exercise(self, request, exercise_id: int, payload: PatchDict[PatchExercise]):
         """
         Update an existing exercise by ID.
@@ -76,7 +77,7 @@ class ExerciseController(ControllerBase):
         exercise.save()
         return exercise
 
-    @route.delete("/{exercise_id}", response={204: None}, permissions=[])  # noqa: UP006
+    @route.delete("/delete/{exercise_id}", response={204: None}, permissions=[])  # noqa: UP006
     def delete_exercise(self, request, exercise_id: int):
         """
         Delete an exercise by ID.

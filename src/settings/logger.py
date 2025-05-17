@@ -1,5 +1,4 @@
 import os
-import sys
 from . import DEBUG
 
 import structlog
@@ -94,6 +93,11 @@ LOGGING = {
         "api": {
             "handlers": ["console", "file_debug"],
             "level": "DEBUG",
+            "propagate": False,
+        },
+        "core": {
+            "handlers": ["console", "file_info", "file_error", "file_debug"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
             "propagate": False,
         },
     },

@@ -1,83 +1,55 @@
-from datetime import datetime
-
-from django.utils.timezone import now
 from ninja_extra import (
     ControllerBase,
     api_controller,
     route,
 )
-from ninja_jwt.exceptions import ValidationError
-from ninja_jwt.settings import api_settings
-from pprint import pprint
-
-# from ninja.errors import HttpError
-from ninja_jwt.tokens import RefreshToken
-
-import logging
-
-# from core import loggerRequest as logger  # type: ignore
-
-# from ninja_jwt.token_blacklist import OutstandingToken
-logger = logging.getLogger(__name__)
+from typing import Optional
 from core.models import Token, User  # Replace with actual models
 from core.models.schemas import (
-    AccessTokenSchema,
     RefreshTokenSchema,
-    TokenListResponse,
-    TokenSchema,
-    UserSchema,
+    PatchTokenUpdate,
 )
 from core.exceptions import Error
+from core.payload.auth import auth_user
+from .. import coreLogger
 
 
 @api_controller("/token", tags=["tokens"])
 class TokenController(ControllerBase):
-    @route.get("/list-tokens", response={200: TokenListResponse, 404: Error})
-    def list_tokens(self, username: str):
+    @route.get("/list-tokens", response={200: RefreshTokenSchema, 404: Error})
+    def list_tokens(self, username: str, password: str):
         """
         Endpoint to list tokens for a user, including the parent token and its children.
         """
-        try:
-            # Retrieve the user
-            user = User.objects.get(username=username, is_active=True)
-
-            print(f"User: {user.username}, ID: {user.id}")
+        user = auth_user(username=username, password=password, request=self.context.request)
+        if user:
+            self.context.response.headers["X-User-Authed"] = "TRUE"
             user_profile = user.profile
-
-            # Fetch the parent token (assuming one active refresh token per user)
             tokens_data = user_profile.get_primary_refresh()
-            print(f"Tokens Data: {tokens_data.token}")
-            pprint(tokens_data, indent=4)
             if not tokens_data:
-                return 404, "No active parent token found for the user."
+                return 404, {"message": "No active parent token found for the user."}
 
             return tokens_data
+        else:
+            self.context.response.headers["X-User-Authed"] = "FALSE"
+            return 404, {"message": "User not found."}
 
-        except User.DoesNotExist:
-            return 404, "User not found."
-
-    @route.post("/update-token", response={200: TokenSchema, 404: Error})
-    def update_token(self, refresh_token: str):
+    @route.put("/update-token", response={200: RefreshTokenSchema, 404: Error})
+    def update_token(self, payload: PatchTokenUpdate):
         """
         updates a refresh token and issues with new token.
         """
+        refresh_token = payload.refresh_Token
         try:
             # token = Token.objects.filter()
             token = Token.refresh_primary_token(token=refresh_token)
 
-            return {
-                "user": None,
-                "token": str(token.token),
-                "exp": token.exp,
-                "is_revoked": False,
-            }
+            return token
 
             # raise HttpError(400, "Token rotation is not enabled.")
         except AttributeError as e:
-            print(f"exp , {str(e)}")
+            coreLogger.error(f"exp , {str(e)}")
             return 404, {"message": "this Token didnt obtained by user"}
-        # except Exception as e:
-        #     loggerAPI.error(500, str(e.__str__))
 
     @route.post("/revoke-token", response={200: str})
     def revoke_token(self, refresh_token: str):
@@ -93,3 +65,17 @@ class TokenController(ControllerBase):
             return "Token successfully revoked."
         except AttributeError:
             return 404, {"message": "this Token didnt obtained by user"}
+
+    @route.post("/create-token", response={200: RefreshTokenSchema, 404: Error})
+    def create_token(self, username: str, password):
+        """
+        creating token with username and password as login
+        """
+        user_Token = auth_user(
+            username=username, password=password, request=self.context.request, get_token=True
+        )
+        if user_Token:
+            return user_Token
+        else:
+            self.context.response.headers["X-User-Authed"] = "FALSE"
+            return 404, {"message": "User not found."}
