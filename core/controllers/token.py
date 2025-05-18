@@ -10,7 +10,7 @@ from core.models import Token, User  # Replace with actual models
 from core.models.schemas import RefreshTokenSchema, PatchTokenUpdate, TokenListResponse, AccessTokenSchema
 from core.exceptions import Error
 from core.payload.auth import auth_user
-from .. import coreLogger as logger
+from apis import apiLogger as logger
 from core.authentications.ninja import GlobalAuth
 from core.models.schemas import ValidateToken
 
@@ -35,13 +35,15 @@ class TokenController(ControllerBase):
             user_profile = user.profile
             tokens_data = user_profile.get_primary_refresh()
             if not tokens_data:
-                return 404, {"message": _("No active parent token found for the user.")}
+                return 404, {"message": "No active parent token found for the user."}
             return tokens_data
         else:
             self.context.response.headers["X-User-Authed"] = "FALSE"
-            return 404, {"message": _("User not found.")}
+            return 404, {"message": "User not found."}
 
-    @route.post("/update-token", response={200: RefreshTokenSchema, 404: Error})
+    @route.post(
+        "/update-token", response={200: RefreshTokenSchema, 404: Error, 500: Error}, auth=GlobalAuth()
+    )
     def update_token(self, payload: PatchTokenUpdate):
         """
         Update a refresh token by rotating it and issuing a new one.
@@ -57,11 +59,11 @@ class TokenController(ControllerBase):
             token = Token.refresh_primary_token(token=refresh_token)
             return token
         except AttributeError as e:
-            coreLogger.error(f"Token update failed: {e}")
-            return 404, {"message": _("This token was not obtained by the user.")}
+            logger.error(f"Token update failed: {e}")
+            return 404, {"message": "This token was not obtained by the user."}
         except Exception as e:
-            coreLogger.warning(f"Unexpected error in update_token: {e}")
-            return 500, {"message": _("An unexpected error occurred.")}
+            logger.warning(f"Unexpected error in update_token: {e}")
+            return 500, {"message": "An unexpected error occurred."}
 
     @route.delete("/revoke-token", response={200: str, 404: Error})
     def revoke_token(self, refresh_token: str):
@@ -78,39 +80,39 @@ class TokenController(ControllerBase):
             token = Token.objects.filter(token=refresh_token).first()
             if token:
                 token.revoke()
-                return 200, _("Token successfully revoked.")
+                return 200, "Token successfully revoked."
             else:
-                return 404, {"message": _("This token was not obtained by the user.")}
+                return 404, {"message": "This token was not obtained by the user."}
         except Exception as e:
-            coreLogger.warning(f"Unexpected error in revoke_token: {e}")
-            return 500, {"message": _("An unexpected error occurred.")}
+            logger.warning(f"Unexpected error in revoke_token: {e}")
+            return 500, {"message": "An unexpected error occurred."}
 
-    @route.post("/create-token", response={200: RefreshTokenSchema, 404: Error})
-    def create_token(self, username: str, password):
-        """
-        Authenticate a user and return a newly created token pair.
+    # @route.post("/create-token", response={200: RefreshTokenSchema, 404: Error, 500: Error}, auth=GlobalAuth())
+    # def create_token(self, username: str, password):
+    #     """
+    #     Authenticate a user and return a newly created token pair.
 
-        Args:
-            username (str): Username.
-            password (str): Password.
+    #     Args:
+    #         username (str): Username.
+    #         password (str): Password.
 
-        Returns:
-            RefreshTokenSchema: Token details upon successful authentication.
-        """
-        try:
-            user_token = auth_user(
-                username=username, password=password, request=self.context.request, get_token=True
-            )
-            if user_token:
-                return user_token
-            else:
-                self.context.response.headers["X-User-Authed"] = "FALSE"
-                return 404, {"message": _("User not found.")}
-        except Exception as e:
-            coreLogger.warning(f"Unexpected error in create_token: {e}")
-            return 500, {"message": _("An unexpected error occurred.")}
+    #     Returns:
+    #         RefreshTokenSchema: Token details upon successful authentication.
+    #     """
+    #     try:
+    #         user_token = auth_user(
+    #             username=username, password=password, request=self.context.request, get_token=True
+    #         )
+    #         if user_token:
+    #             return 200, user_token
+    #         else:
+    #             self.context.response.headers["X-User-Authed"] = "FALSE"
+    #             return 404, {"message": "User not found."}
+    #     except Exception as e:
+    #         logger.warning(f"Unexpected error in create_token: {e}")
+    #         return 500, {"message": "An unexpected error occurred."}
 
-    @route.get("/get-tokens", response={200: TokenListResponse, 404: Error}, auth=GlobalAuth())
+    @route.get("/get-tokens", response={200: TokenListResponse, 404: Error, 500: Error}, auth=GlobalAuth())
     def get_access_tokens(self, request):
         """
         Retrieve all access tokens generated from a valid refresh token.
@@ -125,16 +127,16 @@ class TokenController(ControllerBase):
             authed_user = self.context.request.user
             tokens = authed_token.get_all_access_tokens(authed_user)
             if not tokens:
-                raise ValueError(_("Token must be a valid refresh token."))
+                raise ValueError("Token must be a valid refresh token.")
             return 200, tokens
         except ValueError as e:
-            coreLogger.error(f"Invalid token type: {e}")
+            logger.error(f"Invalid token type: {e}")
             return 404, {"message": str(e)}
         except Exception as e:
-            coreLogger.warning(f"Unexpected error in get_access_tokens: {e}")
-            return 500, {"message": _("An unexpected error occurred.")}
+            logger.warning(f"Unexpected error in get_access_tokens: {e}")
+            return 500, {"message": "An unexpected error occurred."}
 
-    @route.put("/access-token", response={200: AccessTokenSchema, 404: Error}, auth=GlobalAuth())
+    @route.put("/access-token", response={200: AccessTokenSchema, 404: Error, 500: Error}, auth=GlobalAuth())
     def create_access_token(self, request):
         """
         Create a new access token using the authenticated refresh token.
@@ -147,17 +149,20 @@ class TokenController(ControllerBase):
         try:
             authed_profile = self.context.request.profile
             token = authed_profile.create_access_token()
+
             if not token:
-                raise ValueError(_("Token must be a valid refresh token."))
+                logger.warning("Token must be a valid refresh token.")
             return 200, token
         except ValueError as e:
-            coreLogger.error(f"Invalid refresh token: {e}")
-            return 404, {"message": str(e)}
+            logger.error(f"Invalid refresh token: {e}")
+            return 404, {"message": "Invalid refresh token"}
         except Exception as e:
-            coreLogger.warning(f"Unexpected error in create_access_token: {e}")
-            return 500, {"message": _("An unexpected error occurred.")}
+            logger.warning(f"Unexpected error in create_access_token: {e}")
+            return 500, {"message": "An unexpected error occurred."}
 
-    @route.get("/access-tokens", response={200: List[AccessTokenSchema], 404: Error, 500: Error})
+    @route.get(
+        "/access-tokens", response={200: List[AccessTokenSchema], 404: Error, 500: Error}, auth=GlobalAuth()
+    )
     def list_access_tokens(self, request):
         """
         List all active access tokens for the currently authenticated user.
@@ -169,16 +174,16 @@ class TokenController(ControllerBase):
             authed_profile = self.context.request.profile
             primary = authed_profile.get_primary_refresh()
             if not primary:
-                return 404, {"message": _("No valid primary refresh token found.")}
+                return 404, {"message": "No valid primary refresh token found."}
             access_tokens = Token.get_active_tokens(request.user).filter(
                 token_type=Token.ACCESS, parent=primary
             )
             return access_tokens
         except Exception as e:
-            coreLogger.warning(f"Unexpected error in list_access_tokens: {e}")
-            return 500, {"message": _("An unexpected error occurred.")}
+            logger.warning(f"Unexpected error in list_access_tokens: {e}")
+            return 500, {"message": "An unexpected error occurred."}
 
-    @route.get("/token-tree", response={200: TokenListResponse, 404: Error, 500: Error})
+    @route.get("/token-tree", response={200: TokenListResponse, 404: Error, 500: Error}, auth=GlobalAuth())
     def get_token_tree(self, request):
         """
         Return a tree representation of a user's tokens including the refresh token
@@ -191,17 +196,17 @@ class TokenController(ControllerBase):
             authed_profile = self.context.request.profile
             primary = authed_profile.get_primary_refresh()
             if not primary:
-                return 404, {"message": _("No valid primary refresh token found.")}
+                return 404, {"message": "No valid primary refresh token found."}
 
             access_tokens = Token.get_active_tokens(request.user).filter(
                 token_type=Token.ACCESS, parent=primary
             )
 
-            return {"parent": primary, "children": list(access_tokens)}
+            return {"parent": primary, "childrens": list(access_tokens)}
 
         except Exception as e:
-            coreLogger.warning(f"Unexpected error in get_token_tree: {e}")
-            return 500, {"message": _("An unexpected error occurred.")}
+            logger.warning(f"Unexpected error in get_token_tree: {e}")
+            return 500, {"message": "An unexpected error occurred."}
 
     @route.post("/rotate-token", response={200: ValidateToken, 400: Error, 500: Error})
     def rotate_token(self, payload: ValidateToken):
@@ -232,8 +237,8 @@ class TokenController(ControllerBase):
             validated = payload.dict()
             return 200, validated
         except exceptions.ValidationError as e:
-            coreLogger.error(f"Validation error rotating token: {e}")
+            logger.error(f"Validation error rotating token: {e}")
             return 400, {"message": "Invalid token provided."}
         except Exception as e:
-            coreLogger.warning(f"Unexpected error rotating token: {e}")
+            logger.warning(f"Unexpected error rotating token: {e}")
             return 500, {"message": "An unexpected error occurred."}

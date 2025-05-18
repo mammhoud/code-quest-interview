@@ -124,15 +124,15 @@ class Token(models.Model):  # type: ignore
                 dt_timedelta(minutes=15) if token_type == cls.ACCESS else dt_timedelta(days=7)
             )
         )
-        return cls.objects.create(
-            token=raw_token,
+        obj = cls.objects.create(
+            token=str(raw_token),
             token_type=token_type,
             parent=parent,
             created_by=profile.user,
             secret=cls._generate_secret(),
             exp=now() + exp_duration,
         )
-
+        return obj
     @classmethod
     def create_access_token(cls, profile, refresh_token: "Token"):  # used at profile model
         raw = AccessToken.for_user(profile.user)  # using AccessToken class from ninja_jwt

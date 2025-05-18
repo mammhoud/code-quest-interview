@@ -1,5 +1,5 @@
 # flake8: noqa
-from datetime import datetime
+from django.utils.timezone import datetime
 from typing import List, Optional, Type
 
 from django.contrib.auth import get_user_model

@@ -1,6 +1,6 @@
 from typing import Any, List, Optional
 from uuid import UUID
-from datetime import datetime
+from django.utils.timezone import datetime
 from ninja import Schema
 from pydantic import model_validator
 from ninja_jwt.tokens import RefreshToken
@@ -56,9 +56,9 @@ class AccessTokenSchema(Schema):
     """
 
     jti: UUID
-    token_type: str
-    exp: datetime
+    token_type: Optional[str]
     token: Optional[str]
+    exp: Optional[datetime]
     usage: str
 
 
@@ -75,7 +75,7 @@ class RefreshTokenSchema(Schema):
     """
 
     jti: UUID
-    token_type: str
+    token_type: Optional[str]
     exp: datetime
     token: Optional[str]
     usage: str
@@ -91,7 +91,7 @@ class TokenListResponse(Schema):
     """
 
     parent: RefreshTokenSchema
-    children: List[AccessTokenSchema]
+    childrens: List[AccessTokenSchema]
 
 
 class PatchTokenUpdate(Schema):

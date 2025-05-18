@@ -1,5 +1,6 @@
 from typing import Optional
-from datetime import date, datetime
+from django.utils.timezone import datetime
+from datetime import date
 from ninja import Schema, FilterSchema
 
 
