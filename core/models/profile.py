@@ -69,19 +69,19 @@ class Profile(models.Model):
         self.save(update_fields=["token"])
         return self.token
 
-    def create_access_token(self):  # not used
+    def create_access_token(self):  # used at controller (tokencontroller)
         """Generate a new access token linked to the primary refresh token."""
         primary = self.get_primary_refresh()
         if not primary or primary.token_type != Token.REFRESH:
             raise ValueError("Valid primary refresh token required.")
         return Token.create_access_token(self, primary)
 
-    # def get_all_access_tokens(self): # not used
-    #     """Fetch all active access tokens under the primary refresh token."""
-    #     primary = self.get_primary_refresh()
-    #     if not primary or primary.token_type != Token.REFRESH:
-    #         raise ValueError("Valid primary refresh token required.")
-    #     return Token.get_active_tokens(self.user).filter(token_type=Token.ACCESS)
+    def get_all_access_tokens(self): # not used
+        """Fetch all active access tokens under the primary refresh token."""
+        primary = self.get_primary_refresh()
+        if not primary or primary.token_type != Token.REFRESH:
+            raise ValueError("Valid primary refresh token required.")
+        return Token.get_active_tokens(self.user).filter(token_type=Token.ACCESS)
 
     def revoke_primary(self):  # not used
         """Revoke primary refresh token and its children.

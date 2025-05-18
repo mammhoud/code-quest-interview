@@ -5,13 +5,11 @@ from ninja_extra import (
 )
 from typing import Optional
 from core.models import Token, User  # Replace with actual models
-from core.models.schemas import (
-    RefreshTokenSchema,
-    PatchTokenUpdate,
-)
+from core.models.schemas import RefreshTokenSchema, PatchTokenUpdate, TokenListResponse, AccessTokenSchema
 from core.exceptions import Error
 from core.payload.auth import auth_user
 from .. import coreLogger
+from core.authentications.ninja import GlobalAuth
 
 
 @api_controller("/token", tags=["tokens"])
@@ -51,19 +49,19 @@ class TokenController(ControllerBase):
             coreLogger.error(f"exp , {str(e)}")
             return 404, {"message": "this Token didnt obtained by user"}
 
-    @route.delete("/revoke-token", response={200: str})
+    @route.delete("/revoke-token", response={200: str, 404: Error})
     def revoke_token(self, refresh_token: str):
         """
         Revokes a refresh token by blacklisting it.
         """
-        try:
-            token = Token.objects.filter(token=refresh_token).first()
-            if token:
-                token.revoke()
+        # try:
+        token = Token.objects.filter(token=refresh_token).first()
+        if token:
+            token.revoke()
             # refresh = RefreshToken(refresh_token)
             # refresh.blacklist()
-            return "Token successfully revoked."
-        except AttributeError:
+            return 200, "Token successfully revoked."
+        else:
             return 404, {"message": "this Token didnt obtained by user"}
 
     @route.post("/create-token", response={200: RefreshTokenSchema, 404: Error})
@@ -79,3 +77,34 @@ class TokenController(ControllerBase):
         else:
             self.context.response.headers["X-User-Authed"] = "FALSE"
             return 404, {"message": "User not found."}
+
+    @route.get("/get-tokens", response={200: TokenListResponse, 404: Error}, auth=GlobalAuth())
+    def get_access_tokens(self, request):
+        tokens = None
+        try:
+            authed_token = self.context.request.token
+            authed_user = self.context.request.user
+            tokens = authed_token.get_all_access_tokens(authed_user)
+        except ValueError as e:
+            coreLogger.error(f"exp , {str(e)}")
+            return 404, {"message": "token should be a refresh token"}
+        if not tokens:
+            return 404, {"message": "token should be a refresh token"}
+
+        return 200, tokens
+
+    @route.put("/access-token", response={200: AccessTokenSchema, 404: Error}, auth=GlobalAuth())
+    def create_access_token(self, request):
+        token = None
+        try:
+            authed_profile = self.context.request.profile
+            token = authed_profile.create_access_token()
+        except ValueError as e:
+            coreLogger.error(f"exp , {str(e)}")
+            return 404, {"message": "token should be a refresh token"}
+        if not token:
+            return 404, {"message": "token should be a refresh token"}
+
+        return 200, token
+
+

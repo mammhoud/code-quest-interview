@@ -79,16 +79,18 @@ class GlobalAuth(BaseAuthentication):
         request.user = user
         request.profile = profile
         request.auth = token
-
-        token.last_used = now()
-        token.save(update_fields=["last_used"])
+        headers = request.headers
+        user_secret = headers.get(self.secret_header)
 
         try:
-            headers = request.headers
-            user_secret = headers.get(self.secret_header)
             if user_secret:
-                token.secret = token._generate_secret()
-                token.save(update_fields=["secret"])
+                if Token.validate_token(token.jti, user_secret):
+                    token.secret = token._generate_secret()
+
+            logger.info(f"[Auth] User {user.username} authenticated with primary token {token.jti}")
+
+            token.last_used = now()
+            token.save(update_fields=["last_used", "secret"])
         except:  # noqa: E722
             logger.error(f"[Error Auth] request didnt contains Headers ot couldnt get the secret_header var")  # noqa: F541
 

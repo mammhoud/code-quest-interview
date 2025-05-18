@@ -112,7 +112,7 @@ class Token(models.Model):  # type: ignore
     @classmethod
     def create_token(
         cls, profile, raw_token: str, token_type: str, parent: "Token" = None, duration: dt_timedelta = None
-    ):  # used at controller
+    ):  # used at controller # todo add token usage 
         """
         Create and persist a JWT-backed token instance.
         """
@@ -120,7 +120,7 @@ class Token(models.Model):  # type: ignore
             raise ValueError("token_type is required.")
         exp_duration = (
             duration
-            or (  # todo add to settings the default duration / with env var and use it here
+            or (  # todo add to settings the default duration / with env var and use it here 
                 dt_timedelta(minutes=15) if token_type == cls.ACCESS else dt_timedelta(days=7)
             )
         )
@@ -160,7 +160,7 @@ class Token(models.Model):  # type: ignore
 
     # ------------- Query -------------
     @classmethod
-    def validate_token(cls, jti, secret):
+    def validate_token(cls, jti, secret): # used at globalAuth
         try:
             tok = cls.objects.get(jti=jti, secret=secret, is_revoked=False, is_deleted=False)
             return tok.is_valid()

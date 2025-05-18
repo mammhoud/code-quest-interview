@@ -61,11 +61,11 @@ class GlobalAuth(HttpBearer):
         headers = request.headers
         user_secret = headers.get(self.secret_header)
         if user_secret:
-            token.secret = token._generate_secret()
-            token.save(update_fields=["secret"])
+            if Token.validate_token(token.jti, user_secret):
+                token.secret = token._generate_secret()
 
         logger.info(f"[Auth] User {user.username} authenticated with primary token {token.jti}")
 
         token.last_used = now()
-        token.save(update_fields=["last_used"])
+        token.save(update_fields=["last_used", "secret"])
         return token
