@@ -5,7 +5,7 @@
 # # sudo docker volume rm $(sudo docker volume ls -q)
 # Pull the latest changes from the repository
 # sudo git pull -f
-rv run manage.py makemigrations
+uv run manage.py makemigrations
 uv run manage.py migrate
 # Activate the virtual environment again and collect static files
 uv run manage.py collectstatic --no-input
