@@ -1,47 +1,118 @@
 # code-quest-interview
- 
-this repo defined a simple project using django + django rest framework + django unfold
-`src` dir contains a base settings of the project and separated on files to be more readalbe and organized with the same structure of cookiecutters implementation
 
+This repository contains a simple Django project built with Django REST Framework and Django Unfold for admin customization.
 
-could be running by run shell script `run.sh` after install `uv` package manager or use your package manager like pip with  `requirements.txt`
-- `pip install uv`
-- `uv run ./manage makemigrations `
-- `uv run ./manage migrate `
-- `uv run ./manage createsuperuser`
-- `uv run ./manage runserver `
+---
 
+## Project Structure
 
-- starting docker with `docker-compose up -d` for run the databases "redis/postgres"
+* The main source code is located in the `src` directory.
+* The `src` directory contains the base project settings, organized into multiple files for better readability and maintainability.
+* The project follows the typical cookiecutter-style structure for Django projects.
 
-## apps:
-    - core
-    - apis
+---
 
-### core:
+## Getting Started
 
-    contains a basic urls and base models like `profile, defaultbase`
-        - `profile` -> model:
-            - with one to one relation with `user_auth_model`
-            - user, bio, birth_date, created_at, full_name, profile_image, cover_image, language, notes
-        - `created_user` -> permission Class:
-            it was created to be added as permission to check if the user was the same user that created the record to delete or update it correctly
+### Prerequisites
 
-        - also it could contains some signals to perform action with some triggers
-            - create user profile after creating a user 
-            - update the user profile after update the user data related to the profile data
-        - a templete folder contain a profile page with a card to be displayed to the user after login on api page
-        - admin configuration using unfold `https://unfoldadmin.com/docs/`
-        - and one view with the profile data
+* Python (recommended version 3.8+)
+* `uv` package manager (or you can use `pip`)
 
-<<<<<<< HEAD
+### Installation & Running
 
+1. Install the `uv` package manager:
+
+   ```bash
+   pip install uv
+   ```
+
+2. Run the following commands to set up the database and create a superuser:
+
+   ```bash
+   uv run ./manage makemigrations
+   uv run ./manage migrate
+   uv run ./manage createsuperuser
+   ```
+
+3. Start the development server:
+
+   ```bash
+   uv run ./manage runserver
+   ```
+
+---
+
+### Using Docker
+
+To start the necessary services such as Redis and PostgreSQL databases, you can use Docker Compose:
+
+```bash
+docker-compose up -d
+```
+
+This will run the required databases in detached mode.
+
+---
+
+## Applications Overview
+
+The project contains two main Django apps:
+
+* **core**
+* **apis**
+
+---
+
+### core app
+
+The `core` app handles the fundamental parts of the project, including:
+
+* **Models:**
+
+  * `Profile`:
+
+    * One-to-one relationship with the user authentication model (`User`).
+    * Fields include: `user`, `bio`, `birth_date`, `created_at`, `full_name`, `profile_image`, `cover_image`, `language`, and `notes`.
+  * `CreatedUser` (Permission Class):
+
+    * Custom permission to ensure that only the user who created a record can update or delete it.
+
+* **Signals:**
+
+  * Automatically creates a `Profile` when a new user is created.
+  * Updates the profile when user data changes.
+
+* **Templates:**
+
+  * Contains a profile page template displaying user information in a card format after login via the API.
+
+* **Admin Configuration:**
+
+  * Uses [Django Unfold](https://unfoldadmin.com/docs/) for enhanced admin interface customization.
+
+* **Views:**
+
+  * A view to retrieve and display profile data.
+
+---
+
+## Demo
 
 <video width="320" height="240" controls>
   <source src="https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg" type="video/mov">
 </video>
 
+---
 
-=======
-[![asciicast]([https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg/view?usp=drive_link]())]
->>>>>>> refs/remotes/origin/main
+## Contact
+
+For any inquiries or support, please reach out to:
+
+* **Email:** [mahmoud.ezzat.moustafa@gmail.com](mailto:mahmoud.ezzat.moustafa@gmail.com)
+* **Phone:** +2 (010) 1612-7655
+
+---
+
+If you have any questions or need assistance, feel free to open an issue or contribute to the project.
+
