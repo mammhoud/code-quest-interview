@@ -34,4 +34,4 @@ could be running by run shell script `run.sh` after install `uv` package manager
         - admin configuration using unfold `https://unfoldadmin.com/docs/`
         - and one view with the profile data
 
-[![asciicast]([](https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg/view?usp=drive_link))]
+[![asciicast]([https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg/view?usp=drive_link]())]
