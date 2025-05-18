@@ -13,8 +13,6 @@ LOG_DIR = os.path.join(BASE_DIR, "logs")
 os.makedirs(LOG_DIR, exist_ok=True)  # Ensure logs directory exists
 logger_middleware = [
     "django_structlog.middlewares.RequestMiddleware",
-    # "core.base.middlewares.tracking.LoggerRequestMiddleware",
-    # "core.base.middlewares.tracking.ResponseDataRequestIDMiddleware",
 ]
 
 # Logging Configurations

@@ -7,3 +7,8 @@ class ApisConfig(AppConfig):
     name = "apis"
     verbose_name = _("APIs")
     label = "apis"
+
+
+
+    # def ready(self):
+    #     import core.signals

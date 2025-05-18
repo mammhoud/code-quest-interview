@@ -40,3 +40,11 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
+
+
+
+GRAPHENE = {
+    "SCHEMA": "apis.schema.schema",
+    "SCHEMA_INDENT": 2,
+    "MIDDLEWARE": ("graphene_django.debug.DjangoDebugMiddleware",),
+}

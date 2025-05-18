@@ -12,4 +12,4 @@ class CoreConfig(AppConfig):
     ## has signals for create_user_profile, save_user_profile
     # it was added to the models/profile.py file instead of here
     # def ready(self):
-    #     pass
+    #     import core.signals

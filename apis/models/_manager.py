@@ -1,132 +1,140 @@
-# models.py
-
+from core import coreLogger as logger
 from django.db import models
 from django.core.cache import cache
-from core import coreLogger as logger
+from django.db.models.query import QuerySet
 
 
 class StatManager(models.Manager):
     def get_queryset(self):
-        try:
-            cache_key = "stats"
-            stats = cache.get(cache_key)
+        cache_key = "stats"
+        stats = cache.get(cache_key)
 
-            if stats is None:
-                logger.warning("Cache miss: querying stats from database")
+        if stats is None:
+            logger.info("❗ Cache miss: querying Stat from database")
+            try:
                 qs = super().get_queryset().select_related("profile")
                 cache.set(cache_key, qs, timeout=60 * 10)
                 return qs
-            else:
-                logger.info("Cache hit -> stats data from cache")
-                return stats
-        except Exception as e:
-            logger.warning("Error in StatManager.get_queryset")
-            return super().get_queryset()
+            except Exception as e:
+                logger.warning(f"⚠️ Warning in StatManager.get_queryset: {e}")
+                return super().get_queryset()
+        else:
+            logger.info("✔️ Cache hit -> Stat data from cache")
+            return stats
 
     def get_by_profile(self, profile_id):
-        try:
-            cache_key = f"stat_profile_{profile_id}"
-            stat = cache.get(cache_key)
+        cache_key = f"stat_profile_{profile_id}"
+        stat = cache.get(cache_key)
 
-            if stat is None:
-                logger.warning(f"Cache miss: querying stat by profile {profile_id}")
-                try:
-                    stat = self.get_queryset().get(profile_id=profile_id)
-                    cache.set(cache_key, stat, timeout=60 * 10)
-                except self.model.DoesNotExist:
-                    logger.warning(f"No stat found for profile {profile_id}")
-                    return None
-            else:
-                logger.info(f"Cache hit for stat by profile {profile_id}")
-            return stat
-        except Exception as e:
-            logger.warning("Error in StatManager.get_by_profile")
-            return None
+        if stat is None:
+            logger.info(f"❗ Cache miss: querying stat for profile_id={profile_id}")
+            try:
+                stat = self.get_queryset().get(profile_id=profile_id)
+                cache.set(cache_key, stat, timeout=60 * 10)
+            except self.model.DoesNotExist:
+                logger.warning(f"Stat for profile_id={profile_id} does not exist")
+                return None
+            except Exception as e:
+                logger.warning(f"⚠️ Warning in StatManager.get_by_profile: {e}")
+                return None
+        else:
+            logger.info("✔️ Cache hit -> stat by profile")
+
+        return stat
 
     def top_evaluated(self, limit=10):
         try:
             return self.get_queryset().order_by("-evaluation")[:limit]
-        except Exception:
-            logger.warning("Error in StatManager.top_evaluated")
-            return self.none()
+        except Exception as e:
+            logger.warning(f"⚠️ Warning in StatManager.top_evaluated: {e}")
+            return self.get_queryset().none()
 
 
 class WorkoutManager(models.Manager):
-    def get_queryset(self) -> models.QuerySet:
-        try:
-            cache_key = "workouts"
-            workouts = cache.get(cache_key)
+    def get_queryset(self):
+        cache_key = "workouts"
+        workouts = cache.get(cache_key)
 
-            if workouts is None:
-                logger.warning("Cache miss: querying workouts from database")
+        if workouts is None:
+            logger.info("❗ Cache miss: querying workouts")
+            try:
                 qs = super().get_queryset().annotate(total_exercises=models.Count("exercises"))
-                cache.set(cache_key, qs, timeout=30 * 1)
+                cache.set(cache_key, qs, timeout=60 * 10)
                 return qs
+            except Exception as e:
+                logger.warning(f"⚠️ Warning in WorkoutManager.get_queryset: {e}")
+                return super().get_queryset()
+        else:
+            logger.info("✔️ Cache hit -> workouts data from cache")
+            if isinstance(workouts, models.QuerySet):
+                return workouts
             else:
-                logger.info("Cache hit -> workouts from cache")
-                return workouts.to_queryset()
-        except Exception:
-            logger.warning("Error in WorkoutManager.get_queryset")
-            return super().get_queryset()
+                logger.warning("⚠️ Cached workouts is not a QuerySet. Returning as-is.")
+                return workouts
 
     def get_type(self, workout_type):
         try:
             workouts = self.get_queryset()
+
             if isinstance(workouts, models.QuerySet):
                 return workouts.filter(workout_type=workout_type)
             else:
-                return [w for w in workouts if w.get("workout_type") == workout_type]
-        except Exception:
-            logger.warning("Error in WorkoutManager.get_type")
-            return self.none()
+                return [w for w in workouts if isinstance(w, dict) and w.get("workout_type") == workout_type]
+        except Exception as e:
+            logger.warning(f"⚠️ Warning in WorkoutManager.get_type: {e}")
+            return []
 
 
 class ExerciseManager(models.Manager):
     def get_queryset(self):
-        try:
-            cache_key = "exercises"
-            exercises = cache.get(cache_key)
+        cache_key = "exercises"
+        exercises = cache.get(cache_key)
 
-            if exercises is None:
-                logger.warning("Cache miss: querying exercises from database")
+        if exercises is None:
+            logger.info("❗ Cache miss: querying exercises")
+            try:
                 qs = super().get_queryset()
                 cache.set(cache_key, qs, timeout=60 * 10)
                 return qs
+            except Exception as e:
+                logger.warning(f"⚠️ Warning in ExerciseManager.get_queryset: {e}")
+                return super().get_queryset()
+        else:
+            logger.info("✔️ Cache hit -> exercises data from cache")
+            if isinstance(exercises, models.QuerySet):
+                return exercises
             else:
-                logger.info("Cache hit -> exercises from cache")
-                return exercises.to_queryset()
-        except Exception:
-            logger.warning("Error in ExerciseManager.get_queryset")
-            return super().get_queryset()
+                logger.warning("⚠️ Cached exercises is not a QuerySet. Returning as-is.")
+                return exercises
 
     def get_by_workout(self, workout_id):
-        try:
-            cache_key = f"exercises_workout_{workout_id}"
-            exercises = cache.get(cache_key)
+        cache_key = f"exercises_workout_{workout_id}"
+        exercises = cache.get(cache_key)
 
-            if exercises is None:
-                logger.warning(f"Cache miss: querying exercises for workout {workout_id}")
+        if exercises is None:
+            logger.info(f"❗ Cache miss: querying exercises for workout_id={workout_id}")
+            try:
                 exercises = self.get_queryset().filter(workouts__id=workout_id)
                 cache.set(cache_key, exercises, timeout=60 * 10)
-            else:
-                logger.info(f"Cache hit -> exercises for workout {workout_id}")
-            return exercises
-        except Exception:
-            logger.warning("Error in ExerciseManager.get_by_workout")
-            return self.none()
+            except Exception as e:
+                logger.warning(f"⚠️ Warning in get_by_workout: {e}")
+                return self.get_queryset().none()
+        else:
+            logger.info("✔️ Cache hit -> exercises by workout")
+        return exercises
 
     def get_by_profile(self, profile_id):
-        try:
-            cache_key = f"exercises_profile_{profile_id}"
-            exercises = cache.get(cache_key)
+        cache_key = f"exercises_profile_{profile_id}"
+        exercises = cache.get(cache_key)
 
-            if exercises is None:
-                logger.warning(f"Cache miss: querying exercises for profile {profile_id}")
+        if exercises is None:
+            logger.info(f"❗ Cache miss: querying exercises for profile_id={profile_id}")
+            try:
                 exercises = self.get_queryset().filter(profile_id=profile_id)
                 cache.set(cache_key, exercises, timeout=60 * 10)
-            else:
-                logger.info(f"Cache hit -> exercises for profile {profile_id}")
-            return exercises
-        except Exception:
-            logger.warning("Error in ExerciseManager.get_by_profile")
-            return self.none()
+            except Exception as e:
+                logger.warning(f"⚠️ Warning in get_by_profile: {e}")
+                return self.get_queryset().none()
+        else:
+            logger.info("✔️ Cache hit -> exercises by profile")
+        return exercises

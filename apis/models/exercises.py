@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import DefaultBase
 from django.utils.translation import gettext_lazy as _
-from ._manager import WorkoutManager
+from ._manager import ExerciseManager
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from .stats import Stat
@@ -17,7 +17,7 @@ class Exercise(DefaultBase):
     )
     workouts = models.ManyToManyField("Workout", related_name="exercises", blank=True)
 
-    objects = WorkoutManager()
+    objects = ExerciseManager()
 
     def __str__(self):
         return self.name

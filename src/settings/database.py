@@ -47,8 +47,27 @@ CACHES = {
         # },
     }
 }
-GRAPHENE = {
-    "SCHEMA": "apis.schema.schema",
-    "SCHEMA_INDENT": 2,
-    "MIDDLEWARE": ("graphene_django.debug.DjangoDebugMiddleware",),
+
+
+# Redis connection
+CACHEOPS_REDIS = {
+    "host": "localhost",
+    "port": 6379,
+    "db": 1,
+    "socket_timeout": 3,
+    # 'password': '********',
 }
+
+# Cacheops settings
+CACHEOPS = {
+    "apis.stat": {"ops": "all", "timeout": 60 * 10},
+    "apis.workout": {"ops": "all", "timeout": 60 * 5},
+    "apis.exercise": {"ops": "all", "timeout": 60 * 10},
+}
+
+CACHEOPS_DEFAULTS = {
+    "timeout": 60 * 15  # default timeout if not set above
+}
+
+# Disable admin cache if needed
+CACHEOPS_DEGRADE_ON_FAILURE = True  # fallback if Redis down
