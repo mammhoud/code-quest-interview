@@ -29,7 +29,9 @@ jobs:
         pip install uv 
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-        
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
     - name: Run Django server (local run)
       env:
         DJANGO_SETTINGS_MODULE: "src.settings"  # Replace with your Django settings module
