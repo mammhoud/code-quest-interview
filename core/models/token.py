@@ -20,7 +20,7 @@ class Token(models.Model):  # type: ignore
 
     ACCESS = "access"
     REFRESH = "refresh"
-    SLIDING = "sliding"
+    SLIDING = "sliding" # or ROTATED
     TOKEN_TYPES = [
         (ACCESS, "Access"),
         (REFRESH, "Refresh"),

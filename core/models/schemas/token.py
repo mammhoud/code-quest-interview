@@ -1,72 +1,60 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 from uuid import UUID
 from datetime import datetime
 from ninja import Schema
-
-from typing import Any, Optional, List
-from ninja import Schema
-from pydantic import model_validator, model_validator
+from pydantic import model_validator
 from ninja_jwt.tokens import RefreshToken
 from ninja_jwt.utils import token_error
 from ninja_jwt import exceptions
 from ninja_jwt.settings import api_settings
-from datetime import datetime
 from ninja.schema import DjangoGetter
 from .user import UserSchema
 
 
-# Schema for token details
 class TokenSchema(Schema):
+    """
+    Represents a generic token structure including metadata and ownership.
+
+    Attributes:
+        user (Optional[UserSchema]): The user associated with the token.
+        token (str): The token string.
+        exp (datetime): The expiration datetime of the token.
+        is_revoked (bool): Flag indicating if the token is revoked.
+    """
+
     user: Optional[UserSchema]
     token: str
     exp: datetime
     is_revoked: bool
 
 
-# # Validation schema for incoming token payload
-# class ValidateToken(Schema):
-#     refresh_token: Optional[TokenSchema] = None  # parent
-#     access_tokens: Optional[List[TokenSchema]] = None  # children
-
-#     @model_validator(mode="before")
-#     @token_error
-#     def validate_schema(cls, values: DjangoGetter) -> Any:
-#         values = values._obj
-
-#         if isinstance(values, dict):
-#             if not values.get("parent"):
-#                 raise exceptions.ValidationError({"refresh": "refresh token is required"})
-
-#             refresh = RefreshToken(values["parent"])
-
-#             data = {"access": str(refresh.access_token)}
-
-#             if api_settings.ROTATE_REFRESH_TOKENS:
-#                 if api_settings.BLACKLIST_AFTER_ROTATION:
-#                     try:
-#                         # Attempt to blacklist the given refresh token
-#                         refresh.blacklist()
-#                     except AttributeError:
-#                         # If blacklist app not installed, `blacklist` method will
-#                         # not be present
-#                         pass
-
-#                 refresh.set_jti()
-#                 refresh.set_exp()
-#                 refresh.set_iat()
-
-#                 data["refresh"] = str(refresh)
-#             values.update(data)
-#         return values
-
-
 class _TokenSchema(Schema):
+    """
+    Basic representation of a token with identifiers.
+
+    Attributes:
+        jti (str): The unique identifier for the token.
+        token (str): The token string.
+        type (str): The type of the token (e.g., access, refresh).
+    """
+
     jti: str
     token: str
     type: str
 
 
 class AccessTokenSchema(Schema):
+    """
+    Schema for representing an access token and its properties.
+
+    Attributes:
+        jti (UUID): Unique token identifier.
+        token_type (str): Type of the token.
+        exp (datetime): Expiration datetime.
+        token (Optional[str]): The token string (optional).
+        usage (str): Usage purpose or description.
+    """
+
     jti: UUID
     token_type: str
     exp: datetime
@@ -75,6 +63,17 @@ class AccessTokenSchema(Schema):
 
 
 class RefreshTokenSchema(Schema):
+    """
+    Schema for representing a refresh token and its properties.
+
+    Attributes:
+        jti (UUID): Unique token identifier.
+        token_type (str): Type of the token.
+        exp (datetime): Expiration datetime.
+        token (Optional[str]): The token string (optional).
+        usage (str): Usage purpose or description.
+    """
+
     jti: UUID
     token_type: str
     exp: datetime
@@ -83,13 +82,87 @@ class RefreshTokenSchema(Schema):
 
 
 class TokenListResponse(Schema):
+    """
+    Schema for representing a hierarchical token structure.
+
+    Attributes:
+        parent (RefreshTokenSchema): The parent refresh token.
+        children (List[AccessTokenSchema]): List of associated access tokens.
+    """
+
     parent: RefreshTokenSchema
     children: List[AccessTokenSchema]
 
 
 class PatchTokenUpdate(Schema):
+    """
+    Schema for updating token credentials or authentication.
+
+    Attributes:
+        refresh_Token (Optional[str]): The refresh token to be updated.
+        access_Token (Optional[str]): An optional access token for context.
+        username (Optional[str]): Username for authentication.
+        password (Optional[str]): Password for authentication.
+    """
+
     refresh_Token: Optional[str] = None
     access_Token: Optional[str] = None
-    
     username: Optional[str] = None
     password: Optional[str] = None
+
+
+class ValidateToken(Schema):
+    """
+    Validation schema for incoming token rotation payload.
+
+    Fields:
+    ----------
+    refresh_token: Optional[str]
+        The parent refresh token required to rotate tokens.
+
+    access_tokens: Optional[List[str]]
+        Optional list of child access tokens.
+
+    Validation Process:
+    ----------
+    - Checks that the refresh token is present.
+    - Instantiates a RefreshToken object from the provided refresh token.
+    - Creates a new access token associated with the refresh token.
+    - If ROTATE_REFRESH_TOKENS is enabled in settings:
+        - Attempts to blacklist the old refresh token if BLACKLIST_AFTER_ROTATION is enabled.
+        - Sets a new JTI, expiration, and issued-at timestamps on the refreshed token.
+    - Updates the incoming payload with the new tokens.
+    """
+
+    refresh_token: Optional[str] = None
+    access_tokens: Optional[List[str]] = None
+
+    @model_validator(mode="before")
+    @token_error
+    def validate_schema(cls, values: DjangoGetter) -> Any:
+        # Pre-process input payload before model instantiation
+        values = values._obj
+
+        if isinstance(values, dict):
+            if not values.get("refresh_token"):
+                raise exceptions.ValidationError({"refresh_token": "refresh token is required"})
+
+            refresh = RefreshToken(values["refresh_token"])
+
+            data = {"access": str(refresh.access_token)}
+
+            if api_settings.ROTATE_REFRESH_TOKENS:
+                if api_settings.BLACKLIST_AFTER_ROTATION:
+                    try:
+                        refresh.blacklist()
+                    except AttributeError:
+                        # blacklist method not available if blacklist app not installed
+                        pass
+
+                refresh.set_jti()
+                refresh.set_exp()
+                refresh.set_iat()
+
+                data["refresh"] = str(refresh)
+            values.update(data)
+        return values
