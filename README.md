@@ -34,6 +34,7 @@ could be running by run shell script `run.sh` after install `uv` package manager
         - admin configuration using unfold `https://unfoldadmin.com/docs/`
         - and one view with the profile data
 
+<<<<<<< HEAD
 
 
 <video width="320" height="240" controls>
@@ -41,3 +42,6 @@ could be running by run shell script `run.sh` after install `uv` package manager
 </video>
 
 
+=======
+[![asciicast]([https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg/view?usp=drive_link]())]
+>>>>>>> refs/remotes/origin/main
