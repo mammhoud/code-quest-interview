@@ -43,4 +43,4 @@ jobs:
         DJANGO_SETTINGS_MODULE: "src.settings"  # Replace with your Django settings module
       run: |
         ./run.sh
-        uv run ./manage.py runserver
+        uv run manage.py migrate && uv run ./manage.py runserver

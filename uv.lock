@@ -1339,12 +1339,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pygraphviz"
-version = "1.14"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/66/ca/823d5c74a73d6b8b08e1f5aea12468ef334f0732c65cbb18df2a7f285c87/pygraphviz-1.14.tar.gz", hash = "sha256:c10df02377f4e39b00ae17c862f4ee7e5767317f1c6b2dfd04cea6acc7fc2bea", size = 106003 }
-
-[[package]]
 name = "pyjwt"
 version = "2.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1738,7 +1732,6 @@ dependencies = [
     { name = "psycopg" },
     { name = "psycopg-binary" },
     { name = "pydot" },
-    { name = "pygraphviz" },
     { name = "python-decouple" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
@@ -1791,7 +1784,6 @@ requires-dist = [
     { name = "psycopg", specifier = ">=3.2.8" },
     { name = "psycopg-binary", specifier = ">=3.2.8" },
     { name = "pydot", specifier = ">=3.0.2" },
-    { name = "pygraphviz", specifier = ">=1.14" },
     { name = "python-decouple", specifier = ">=3.8" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "pyyaml", specifier = ">=6.0.2" },
