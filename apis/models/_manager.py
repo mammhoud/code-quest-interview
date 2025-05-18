@@ -20,7 +20,7 @@ class StatManager(models.Manager):
                 logger.info("Cache hit -> stats data from cache")
                 return stats
         except Exception as e:
-            logger.exception("Error in StatManager.get_queryset")
+            logger.warning("Error in StatManager.get_queryset")
             return super().get_queryset()
 
     def get_by_profile(self, profile_id):
@@ -40,14 +40,14 @@ class StatManager(models.Manager):
                 logger.info(f"Cache hit for stat by profile {profile_id}")
             return stat
         except Exception as e:
-            logger.exception("Error in StatManager.get_by_profile")
+            logger.warning("Error in StatManager.get_by_profile")
             return None
 
     def top_evaluated(self, limit=10):
         try:
             return self.get_queryset().order_by("-evaluation")[:limit]
         except Exception:
-            logger.exception("Error in StatManager.top_evaluated")
+            logger.warning("Error in StatManager.top_evaluated")
             return self.none()
 
 
@@ -66,7 +66,7 @@ class WorkoutManager(models.Manager):
                 logger.info("Cache hit -> workouts from cache")
                 return workouts.to_queryset()
         except Exception:
-            logger.exception("Error in WorkoutManager.get_queryset")
+            logger.warning("Error in WorkoutManager.get_queryset")
             return super().get_queryset()
 
     def get_type(self, workout_type):
@@ -77,7 +77,7 @@ class WorkoutManager(models.Manager):
             else:
                 return [w for w in workouts if w.get("workout_type") == workout_type]
         except Exception:
-            logger.exception("Error in WorkoutManager.get_type")
+            logger.warning("Error in WorkoutManager.get_type")
             return self.none()
 
 
@@ -96,7 +96,7 @@ class ExerciseManager(models.Manager):
                 logger.info("Cache hit -> exercises from cache")
                 return exercises.to_queryset()
         except Exception:
-            logger.exception("Error in ExerciseManager.get_queryset")
+            logger.warning("Error in ExerciseManager.get_queryset")
             return super().get_queryset()
 
     def get_by_workout(self, workout_id):
@@ -112,7 +112,7 @@ class ExerciseManager(models.Manager):
                 logger.info(f"Cache hit -> exercises for workout {workout_id}")
             return exercises
         except Exception:
-            logger.exception("Error in ExerciseManager.get_by_workout")
+            logger.warning("Error in ExerciseManager.get_by_workout")
             return self.none()
 
     def get_by_profile(self, profile_id):
@@ -128,5 +128,5 @@ class ExerciseManager(models.Manager):
                 logger.info(f"Cache hit -> exercises for profile {profile_id}")
             return exercises
         except Exception:
-            logger.exception("Error in ExerciseManager.get_by_profile")
+            logger.warning("Error in ExerciseManager.get_by_profile")
             return self.none()

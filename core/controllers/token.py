@@ -10,7 +10,7 @@ from core.models import Token, User  # Replace with actual models
 from core.models.schemas import RefreshTokenSchema, PatchTokenUpdate, TokenListResponse, AccessTokenSchema
 from core.exceptions import Error
 from core.payload.auth import auth_user
-from .. import coreLogger
+from .. import coreLogger as logger
 from core.authentications.ninja import GlobalAuth
 from core.models.schemas import ValidateToken
 
@@ -60,7 +60,7 @@ class TokenController(ControllerBase):
             coreLogger.error(f"Token update failed: {e}")
             return 404, {"message": _("This token was not obtained by the user.")}
         except Exception as e:
-            coreLogger.exception(f"Unexpected error in update_token: {e}")
+            coreLogger.warning(f"Unexpected error in update_token: {e}")
             return 500, {"message": _("An unexpected error occurred.")}
 
     @route.delete("/revoke-token", response={200: str, 404: Error})
@@ -82,7 +82,7 @@ class TokenController(ControllerBase):
             else:
                 return 404, {"message": _("This token was not obtained by the user.")}
         except Exception as e:
-            coreLogger.exception(f"Unexpected error in revoke_token: {e}")
+            coreLogger.warning(f"Unexpected error in revoke_token: {e}")
             return 500, {"message": _("An unexpected error occurred.")}
 
     @route.post("/create-token", response={200: RefreshTokenSchema, 404: Error})
@@ -107,7 +107,7 @@ class TokenController(ControllerBase):
                 self.context.response.headers["X-User-Authed"] = "FALSE"
                 return 404, {"message": _("User not found.")}
         except Exception as e:
-            coreLogger.exception(f"Unexpected error in create_token: {e}")
+            coreLogger.warning(f"Unexpected error in create_token: {e}")
             return 500, {"message": _("An unexpected error occurred.")}
 
     @route.get("/get-tokens", response={200: TokenListResponse, 404: Error}, auth=GlobalAuth())
@@ -131,7 +131,7 @@ class TokenController(ControllerBase):
             coreLogger.error(f"Invalid token type: {e}")
             return 404, {"message": str(e)}
         except Exception as e:
-            coreLogger.exception(f"Unexpected error in get_access_tokens: {e}")
+            coreLogger.warning(f"Unexpected error in get_access_tokens: {e}")
             return 500, {"message": _("An unexpected error occurred.")}
 
     @route.put("/access-token", response={200: AccessTokenSchema, 404: Error}, auth=GlobalAuth())
@@ -154,7 +154,7 @@ class TokenController(ControllerBase):
             coreLogger.error(f"Invalid refresh token: {e}")
             return 404, {"message": str(e)}
         except Exception as e:
-            coreLogger.exception(f"Unexpected error in create_access_token: {e}")
+            coreLogger.warning(f"Unexpected error in create_access_token: {e}")
             return 500, {"message": _("An unexpected error occurred.")}
 
     @route.get("/access-tokens", response={200: List[AccessTokenSchema], 404: Error, 500: Error})
@@ -175,7 +175,7 @@ class TokenController(ControllerBase):
             )
             return access_tokens
         except Exception as e:
-            coreLogger.exception(f"Unexpected error in list_access_tokens: {e}")
+            coreLogger.warning(f"Unexpected error in list_access_tokens: {e}")
             return 500, {"message": _("An unexpected error occurred.")}
 
     @route.get("/token-tree", response={200: TokenListResponse, 404: Error, 500: Error})
@@ -200,7 +200,7 @@ class TokenController(ControllerBase):
             return {"parent": primary, "children": list(access_tokens)}
 
         except Exception as e:
-            coreLogger.exception(f"Unexpected error in get_token_tree: {e}")
+            coreLogger.warning(f"Unexpected error in get_token_tree: {e}")
             return 500, {"message": _("An unexpected error occurred.")}
 
     @route.post("/rotate-token", response={200: ValidateToken, 400: Error, 500: Error})
@@ -235,5 +235,5 @@ class TokenController(ControllerBase):
             coreLogger.error(f"Validation error rotating token: {e}")
             return 400, {"message": "Invalid token provided."}
         except Exception as e:
-            coreLogger.exception(f"Unexpected error rotating token: {e}")
+            coreLogger.warning(f"Unexpected error rotating token: {e}")
             return 500, {"message": "An unexpected error occurred."}
