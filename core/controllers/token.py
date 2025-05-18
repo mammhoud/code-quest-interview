@@ -16,10 +16,10 @@ from .. import coreLogger
 
 @api_controller("/token", tags=["tokens"])
 class TokenController(ControllerBase):
-    @route.get("/list-tokens", response={200: RefreshTokenSchema, 404: Error})
-    def list_tokens(self, username: str, password: str):
+    @route.get("/get-refresh", response={200: RefreshTokenSchema, 404: Error})
+    def get_refresh_token(self, username: str, password: str):
         """
-        Endpoint to list tokens for a user, including the parent token and its children.
+        Endpoint to get token for a user, including the parent token and its children.
         """
         user = auth_user(username=username, password=password, request=self.context.request)
         if user:
@@ -34,7 +34,7 @@ class TokenController(ControllerBase):
             self.context.response.headers["X-User-Authed"] = "FALSE"
             return 404, {"message": "User not found."}
 
-    @route.put("/update-token", response={200: RefreshTokenSchema, 404: Error})
+    @route.post("/update-token", response={200: RefreshTokenSchema, 404: Error})
     def update_token(self, payload: PatchTokenUpdate):
         """
         updates a refresh token and issues with new token.
@@ -51,7 +51,7 @@ class TokenController(ControllerBase):
             coreLogger.error(f"exp , {str(e)}")
             return 404, {"message": "this Token didnt obtained by user"}
 
-    @route.post("/revoke-token", response={200: str})
+    @route.delete("/revoke-token", response={200: str})
     def revoke_token(self, refresh_token: str):
         """
         Revokes a refresh token by blacklisting it.

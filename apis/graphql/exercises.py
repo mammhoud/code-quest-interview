@@ -44,10 +44,7 @@ class CreateExercise(graphene.Mutation):
     def mutate(self, info, name, profile_id, description=None, duration=None):
         profile = Profile.objects.get(id=profile_id)
         exercise = Exercise.objects.create(
-            name=name,
-            description=description,
-            duration=duration,
-            profile=profile
+            name=name, description=description, duration=duration, profile=profile
         )
         return CreateExercise(exercise=exercise)
 

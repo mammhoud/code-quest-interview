@@ -13,9 +13,9 @@ class StatSerializer(serializers.ModelSerializer):
             "id",
             "profile",
             "full_name",
-            "total_records",
+            "total_workouts",
             "total_exercises",
-            "total_friends",
+            # "total_friends",
             "evaluation",
         ]
         read_only_fields = ["id", "full_name"]

@@ -17,7 +17,9 @@ from core.authentications.ninja import GlobalAuth
 
 @api_controller("exercise/", auth=GlobalAuth(), tags=["Exercise"], permissions=[])
 class ExerciseController(ControllerBase):
-    @route.get("/list", response={200: List[Exercise], 404: Error}, permissions=[], throttle=[BurstRateThrottle()])  # noqa: UP006
+    @route.get(
+        "/list", response={200: List[Exercise], 404: Error}, permissions=[], throttle=[BurstRateThrottle()]
+    )  # noqa: UP006
     def get_exercises(self, filters: _ExerciseFilter = Query(None)):  # noqa: B008
         """
         Get a list of exercises with optional filtering.
@@ -56,13 +58,27 @@ class ExerciseController(ControllerBase):
 
         return 201, obj
 
-    @route.get("/get/{exercise_id}", response={200: Exercise}, permissions=[])  # noqa: UP006
+    @route.get("/get/{exercise_id}", response={200: Exercise, 404: Error}, permissions=[])  # noqa: UP006
     def get_exercise(self, request, exercise_id: int):
         """
         Get a specific exercise by ID.
         """
         exercise = get_object_or_404(exerciseModel, id=exercise_id)
-        return exercise
+        if exercise:
+            return 200, exercise
+        else:
+            return 404, {"message": "exercise not found"}
+
+    @route.get("/get_profile/{profile_id}", response={200: Exercise}, permissions=[])  # noqa: UP006
+    def get_exercise_profile(self, request, profile_id: int):
+        """
+        Get a specific exercise by ID.
+        """
+        exercise = exerciseModel.objects.get_by_profile(profile_id=profile_id)
+        if exercise:
+            return 200, exercise
+        else:
+            return 404, {"message": "profile not found"}
 
     @route.patch("/update/{exercise_id}", response={200: Exercise}, permissions=[])  # noqa: UP006
     def update_exercise(self, request, exercise_id: int, payload: PatchDict[PatchExercise]):

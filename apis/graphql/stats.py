@@ -29,20 +29,18 @@ class Query(graphene.ObjectType):
 class CreateStat(graphene.Mutation):
     class Arguments:
         profile_id = ID(required=True)
-        total_records = Int()
         total_exercises = Int()
-        total_friends = Int()
+        total_workouts = Int()
         evaluation = Int()
 
     stat = Field(StatType)
 
-    def mutate(self, info, profile_id, total_records=0, total_exercises=0, total_friends=0, evaluation=0):
+    def mutate(self, info, profile_id, total_exercises=0, total_workouts=0, evaluation=0):
         profile = Profile.objects.get(id=profile_id)
         stat = Stat.objects.create(
             profile=profile,
-            total_records=total_records,
             total_exercises=total_exercises,
-            total_friends=total_friends,
+            total_workouts=total_workouts,
             evaluation=evaluation
         )
         return CreateStat(stat=stat)

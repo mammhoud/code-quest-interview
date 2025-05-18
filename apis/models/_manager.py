@@ -42,7 +42,7 @@ class StatManager(models.Manager):
 class WorkoutManager(models.Manager):
     def get_queryset(
         self,
-    ) -> models.QuerySet: 
+    ) -> models.QuerySet:
         try:
             cache_key = "workouts"
             workouts = cache.get(cache_key)

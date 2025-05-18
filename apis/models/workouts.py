@@ -2,6 +2,10 @@ from django.db import models
 from django.db.models import Count
 from ._manager import WorkoutManager
 from core.models import DefaultBase
+from django.db.models.signals import post_save, post_delete, pre_save
+from django.dispatch import receiver
+from .stats import Stat
+from django.db import transaction
 
 
 class Workout(DefaultBase):
@@ -33,3 +37,20 @@ class Workout(DefaultBase):
         """
         workouts = cls.objects.filter(exercises__profile=profile).annotate(total_exercises=Count("exercises"))
         return workouts
+
+
+@receiver([post_save, post_delete, ], sender=Workout)
+def update_stats(sender, instance: Workout, **kwargs):
+    # Check if profile exists
+    if not instance.profile:
+        return
+
+    # Use transaction to ensure consistency
+    with transaction.atomic():
+        # Re-fetch total workouts for this profile
+        total_workouts = Workout.objects.filter(profile=instance.profile).count()
+
+        # Update or create the corresponding Stat record
+        stat, created = Stat.objects.get_or_create(profile=instance.profile)
+        stat.total_workouts = total_workouts  # Assuming this is the intended field
+        stat.save(update_fields = ["total_workouts"])

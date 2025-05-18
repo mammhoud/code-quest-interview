@@ -32,10 +32,8 @@ class UserProfileController(ControllerBase):
         "/profileImage",
     )
     def update_ProfilImage(self, file: UploadedFile = File(...)):  # noqa: B008
-
-
         # url_file = file_upload(file)
-        # apiLogger.info(f"url_file {url_file}")    
+        # apiLogger.info(f"url_file {url_file}")
         if self.context.request:
             profile = self.context.request.profile
             profile.profile_image.save(file.name, file)

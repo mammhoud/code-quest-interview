@@ -23,7 +23,9 @@ class ExerciseAdmin(ModelAdmin):
 
 @admin.register(Stat)
 class StatsAdmin(ModelAdmin):
-    list_display = ("profile", "total_records", "total_exercises", "total_friends", "evaluation")
+    list_display = ("profile", "total_workouts", "total_exercises",
+                    # "total_friends",
+                    "evaluation")
     search_fields = ("profile__full_name",)
     list_filter = ("evaluation",)
 

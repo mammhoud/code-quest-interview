@@ -14,9 +14,8 @@ class _Profile(Schema):
 class Stat(Schema):
     id: int
     profile: Optional[_Profile]
-    total_records: int
     total_exercises: int
-    total_friends: int
+    total_workouts: int
     evaluation: int
     created_at: datetime
     updated_at: datetime
@@ -25,9 +24,8 @@ class Stat(Schema):
 # Patch schema for partial updates
 class PatchStat(Schema):
     profile_id: Optional[int]
-    total_records: Optional[int]
     total_exercises: Optional[int]
-    total_friends: Optional[int]
+    total_workouts: Optional[int]
     evaluation: Optional[int]
 
 

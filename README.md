@@ -33,3 +33,5 @@ could be running by run shell script `run.sh` after install `uv` package manager
         - a templete folder contain a profile page with a card to be displayed to the user after login on api page
         - admin configuration using unfold `https://unfoldadmin.com/docs/`
         - and one view with the profile data
+
+[![asciicast](screenshots/Video.mov)](screenshots/Video.mov)

@@ -12,8 +12,8 @@ class StatListCreateView(generics.ListCreateAPIView):
     """
     List all stats or create a new stat.
     using a filter backend to filter by profile ID or evaluation.
-    and order the output by total_records, total_exercises, or evaluation.
-    Example: /api/stats/?ordering=total_records
+    and order the output by total_workouts, total_exercises, or evaluation.
+    Example: /api/stats/?ordering=total_workouts
 
     Optionally filter by profile ID or evaluation.
     Example: /api/stats/?profile=3&evaluation=5
@@ -25,7 +25,7 @@ class StatListCreateView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["profile", "evaluation"]
     search_fields = ["profile__full_name"]
-    ordering_fields = ["total_records", "total_exercises", "evaluation"]
+    ordering_fields = ["total_workouts", "total_exercises", "evaluation"]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
 
