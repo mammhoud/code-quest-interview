@@ -99,9 +99,7 @@ The `core` app handles the fundamental parts of the project, including:
 
 ## Demo
 
-<video width="320" height="240" controls>
-  <source src="https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg" type="video/mov">
-</video>
+[Watch demo video](https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg/view?usp=sharing)
 
 ---
 
