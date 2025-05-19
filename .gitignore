@@ -9,7 +9,7 @@ __pycache__/
 # llm extensions
 appmap.log
 
-
+*/.staticfiles
 # Assets Docker Files
 .Docker/** 
 # Distribution / packaging

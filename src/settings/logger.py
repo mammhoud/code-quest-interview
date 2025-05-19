@@ -18,7 +18,7 @@ logger_middleware = [
 # Logging Configurations
 LOGGING = {
     "version": 1,
-    "disable_existing_loggers": False,
+    "disable_existing_loggers": True,
     "formatters": {
         "colored_console": {
             "()": "colorlog.ColoredFormatter",
@@ -100,22 +100,7 @@ LOGGING = {
         },
     },
 }
-# structlog.configure(
-#     processors=[
-#         structlog.contextvars.merge_contextvars,
-#         structlog.stdlib.filter_by_level,
-#         structlog.processors.TimeStamper(fmt="iso"),
-#         structlog.stdlib.add_logger_name,
-#         structlog.stdlib.add_log_level,
-#         structlog.processors.StackInfoRenderer(),
-#         structlog.processors.format_exc_info,
-#         structlog.processors.UnicodeDecoder(),
-#         structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
-#     ],
-#     context_class=dict,
-#     logger_factory=structlog.stdlib.LoggerFactory(),
-#     cache_logger_on_first_use=True,
-# )
+
 
 # Structlog Configuration
 structlog.configure(
