@@ -61,15 +61,15 @@ This runs the services in detached mode, allowing the application to connect to 
 
 The project contains two main apps:
 
-* **core**: core business logic and models
-* **apis**: token management and API endpoints
+* **apis**: Apis Endpoints Samples and models
+* **core**: Token management, Profile and auth/permission logic
 
 ---
 
 
 ### Models
 
-The project includes several core models to handle workouts, exercises, statistics, and their relationships with user profiles.
+The project includes several models to handle workouts, exercises, statistics, and their relationships with user profiles Also Token model with profile&user relation.
 
 #### Exercise
 
