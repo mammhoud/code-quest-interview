@@ -8,7 +8,7 @@ __pycache__/
 
 # llm extensions
 appmap.log
-./Docker
+
 */.staticfiles
 # Assets Docker Files
 .Docker/** 
@@ -165,3 +165,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 screenshots/Video.mov
+./Docker

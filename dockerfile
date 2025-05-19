@@ -18,5 +18,4 @@ COPY . /app
 RUN pip install pipx
 RUN pipx install uv
 
-# Command to run your application (replace 'app.py' with your script)
-CMD ["run.sh"]
+ENTRYPOINT ["/app/run.sh"]
