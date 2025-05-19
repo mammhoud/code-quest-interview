@@ -33,4 +33,3 @@ def get_ProfileOrToken(user: User = None, token: Token = None) -> str: # type: i
         coreLogger.error("method: get_ProfileOrToken; should take a user instance")
         return None
 
-    

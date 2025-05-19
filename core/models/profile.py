@@ -6,7 +6,6 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from .token import Token
 
-from .base import DefaultBase
 
 
 class Profile(models.Model):

@@ -1,10 +1,6 @@
-from typing import List
-
-from django.db import transaction
 from django.shortcuts import get_object_or_404
 from ninja import PatchDict, Query
-from ninja.constants import NOT_SET
-from ninja_extra import ControllerBase, api_controller, route, status
+from ninja_extra import ControllerBase, api_controller, route
 
 from core.throttle import BurstRateThrottle
 
@@ -18,7 +14,7 @@ from core.authentications.ninja import GlobalAuth
 @api_controller("exercise/", auth=GlobalAuth(), tags=["Exercise"], permissions=[])
 class ExerciseController(ControllerBase):
     @route.get(
-        "/list", response={200: List[Exercise], 404: Error}, permissions=[], throttle=[BurstRateThrottle()]
+        "/list", response={200: list[Exercise], 404: Error}, permissions=[], throttle=[BurstRateThrottle()]
     )  # noqa: UP006
     def get_exercises(self, filters: _ExerciseFilter = Query(None)):  # noqa: B008
         """

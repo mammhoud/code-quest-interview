@@ -1,3 +1,5 @@
+# flake8: noqa
+
 from .workouts import Query as WorkoutQuery
 from .stats import Query as StatQuery
 from .exercises import Query as ExerciseQuery

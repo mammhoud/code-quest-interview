@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any
 from uuid import UUID
 from django.utils.timezone import datetime
 from ninja import Schema
@@ -22,7 +22,7 @@ class TokenSchema(Schema):
         is_revoked (bool): Flag indicating if the token is revoked.
     """
 
-    user: Optional[UserSchema]
+    user: UserSchema | None
     token: str
     exp: datetime
     is_revoked: bool
@@ -56,9 +56,9 @@ class AccessTokenSchema(Schema):
     """
 
     jti: UUID
-    token_type: Optional[str]
-    token: Optional[str]
-    exp: Optional[datetime]
+    token_type: str | None
+    token: str | None
+    exp: datetime | None
     usage: str
 
 
@@ -75,9 +75,9 @@ class RefreshTokenSchema(Schema):
     """
 
     jti: UUID
-    token_type: Optional[str]
+    token_type: str | None
     exp: datetime
-    token: Optional[str]
+    token: str | None
     usage: str
 
 
@@ -91,7 +91,7 @@ class TokenListResponse(Schema):
     """
 
     parent: RefreshTokenSchema
-    childrens: List[AccessTokenSchema]
+    childrens: list[AccessTokenSchema]
 
 
 class PatchTokenUpdate(Schema):
@@ -105,10 +105,10 @@ class PatchTokenUpdate(Schema):
         password (Optional[str]): Password for authentication.
     """
 
-    refresh_Token: Optional[str] = None
-    access_Token: Optional[str] = None
-    username: Optional[str] = None
-    password: Optional[str] = None
+    refresh_Token: str | None = None
+    access_Token: str | None = None
+    username: str | None = None
+    password: str | None = None
 
 
 class ValidateToken(Schema):
@@ -134,8 +134,8 @@ class ValidateToken(Schema):
     - Updates the incoming payload with the new tokens.
     """
 
-    refresh_token: Optional[str] = None
-    access_tokens: Optional[List[str]] = None
+    refresh_token: str | None = None
+    access_tokens: list[str] | None = None
 
     @model_validator(mode="before")
     @token_error

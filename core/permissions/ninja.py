@@ -1,7 +1,6 @@
 from ninja_extra import permissions
-from ninja_extra import api_controller, http_get, ControllerBase
+from ninja_extra import ControllerBase
 from django.http import HttpRequest
-from core import coreLogger as logger
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):

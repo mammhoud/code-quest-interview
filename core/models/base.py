@@ -1,11 +1,8 @@
-import itertools
 from django.conf import settings
 from django.db import models
-from django.utils import timezone
 
 # from django.utils.text import slugify
 # from core.base.models.serializers.slugify import slugify
-from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields import CreationDateTimeField,ShortUUIDField,ModificationDateTimeField
 

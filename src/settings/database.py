@@ -14,7 +14,7 @@ else:
     DB_NAME = env("DB_NAME", default="postgres")
     DB_USER = env("DB_USERNAME", default="postgres")
     DB_PASS = env("DB_PASS", default="postgres")
-    DB_HOST = env("DB_HOST", default="localhost")
+    DB_HOST = env("DB_HOST", default="127.0.0.1")
     DB_PORT = env("DB_PORT", default=5432)
     ENVIRONMENT = env("ENVIRONMENT", default="dev")
 
@@ -34,7 +34,7 @@ else:
 
 
 CACHES_PORT = env("CACHES_PORT", default=6379)
-CACHES_HOST = env("CACHES_HOST", default="localhost")
+CACHES_HOST = env("CACHES_HOST", default="127.0.0.1")
 CACHES_DB = env("CACHES_DB", default=1)
 CACHES_NAME = env("CACHES_NAME", default="redis")
 CACHES = {
@@ -51,7 +51,7 @@ CACHES = {
 
 # Redis connection
 CACHEOPS_REDIS = {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "port": 6379,
     "db": 1,
     "socket_timeout": 3,

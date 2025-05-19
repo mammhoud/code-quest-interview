@@ -1,7 +1,6 @@
 from core import coreLogger as logger
 from django.db import models
 from django.core.cache import cache
-from django.db.models.query import QuerySet
 
 
 class StatManager(models.Manager):

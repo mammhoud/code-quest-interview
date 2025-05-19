@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from cacheops.signals import cache_invalidated
 
 
 class CoreConfig(AppConfig):

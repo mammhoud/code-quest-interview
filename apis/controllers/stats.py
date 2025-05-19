@@ -1,4 +1,3 @@
-from typing import List
 from django.shortcuts import get_object_or_404
 from ninja import Query, PatchDict
 from ninja_extra import ControllerBase, api_controller, route
@@ -13,7 +12,7 @@ from ..models.schemas.stats import Stat, PatchStat, _StatFilter
 
 @api_controller("stat/", auth=GlobalAuth(), tags=["Stat"], throttle=[BurstRateThrottle()])
 class StatController(ControllerBase):
-    @route.get("/list", response={200: List[Stat], 404: Error})
+    @route.get("/list", response={200: list[Stat], 404: Error})
     def list_stats(self, filters: _StatFilter = Query(None)):
         """
         Get list of stats with optional filtering.

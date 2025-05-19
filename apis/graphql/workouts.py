@@ -14,7 +14,7 @@ class WorkoutType(DjangoObjectType):
 class Query(graphene.ObjectType):
     all_workouts = List(WorkoutType)
     workout_by_id = Field(WorkoutType, id=ID(required=True))
-    workouts_by_profile = List(WorkoutType, profile_id=ID(required=False)) 
+    workouts_by_profile = List(WorkoutType, profile_id=ID(required=False))
 
     def resolve_all_workouts(root, info):
         return Workout.objects.all()

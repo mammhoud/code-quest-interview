@@ -1,7 +1,6 @@
-from typing import List
 from django.shortcuts import get_object_or_404
 from ninja import Query, PatchDict
-from ninja_extra import ControllerBase, api_controller, route, status
+from ninja_extra import ControllerBase, api_controller, route
 
 from core.throttle import BurstRateThrottle
 from core.exceptions import Error
@@ -13,7 +12,7 @@ from ..models.schemas.workouts import Workout, PatchWorkout, _WorkoutFilter
 
 @api_controller("workout/", auth=GlobalAuth(), tags=["Workout"], permissions=[])
 class WorkoutController(ControllerBase):
-    @route.get("/list", response={200: List[Workout], 404: Error}, throttle=[BurstRateThrottle()])
+    @route.get("/list", response={200: list[Workout], 404: Error}, throttle=[BurstRateThrottle()])
     def list_workouts(self, filters: _WorkoutFilter = Query(None)):
         """
         Get a list of workouts with optional filtering.
@@ -23,8 +22,8 @@ class WorkoutController(ControllerBase):
             queryset = filters.filter(queryset)
         return list(queryset)
 
-    @route.put("/bulk", response={200: List[Workout]}, permissions=[])  # noqa: UP006
-    def bulk_create_workouts(self, request, payload: List[PatchDict[PatchWorkout]]):  # noqa: B008, UP006
+    @route.put("/bulk", response={200: list[Workout]}, permissions=[])  # noqa: UP006
+    def bulk_create_workouts(self, request, payload: list[PatchDict[PatchWorkout]]):  # noqa: B008, UP006
         """
         bulk Creation of workoutss.
         """

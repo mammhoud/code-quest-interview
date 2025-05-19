@@ -1,4 +1,3 @@
-from typing import Optional
 from django.utils.timezone import datetime
 from ninja import Schema, FilterSchema
 
@@ -6,14 +5,14 @@ from ninja import Schema, FilterSchema
 # Minimal Profile schema for relation
 class _Profile(Schema):
     id: int
-    first_name: Optional[str]
-    last_name: Optional[str]
+    first_name: str | None
+    last_name: str | None
 
 
 # Full schema for returning Stat data
 class Stat(Schema):
     id: int
-    profile: Optional[_Profile]
+    profile: _Profile | None
     total_exercises: int
     total_workouts: int
     evaluation: int
@@ -23,16 +22,16 @@ class Stat(Schema):
 
 # Patch schema for partial updates
 class PatchStat(Schema):
-    profile_id: Optional[int]
-    total_exercises: Optional[int]
-    total_workouts: Optional[int]
-    evaluation: Optional[int]
+    profile_id: int | None
+    total_exercises: int | None
+    total_workouts: int | None
+    evaluation: int | None
 
 
 # Filter schema for querying Stat records
 class _StatFilter(FilterSchema):
-    profile_id: Optional[int]
-    evaluation: Optional[int]
+    profile_id: int | None
+    evaluation: int | None
 
     def filter(self, queryset):
         if self.profile_id:

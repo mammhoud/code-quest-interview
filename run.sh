@@ -1,3 +1,6 @@
+#! /bin/sh
+cd /app # -> for docker container vol
+source .venv/bin/activate
 # # sudo docker stop $(sudo docker ps -aq)
 # # sudo docker rm $(sudo docker ps -aq)
 # # sudo docker rmi $(sudo docker images -q)

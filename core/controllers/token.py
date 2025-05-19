@@ -3,10 +3,8 @@ from ninja_extra import (
     api_controller,
     route,
 )
-from typing import List, Optional
-from django.utils.translation import gettext_lazy as _
 from core import exceptions
-from core.models import Token, User  # Replace with actual models
+from core.models import Token  # Replace with actual models
 from core.models.schemas import RefreshTokenSchema, PatchTokenUpdate, TokenListResponse, AccessTokenSchema
 from core.exceptions import Error
 from core.payload.auth import auth_user
@@ -161,7 +159,7 @@ class TokenController(ControllerBase):
             return 500, {"message": "An unexpected error occurred."}
 
     @route.get(
-        "/access-tokens", response={200: List[AccessTokenSchema], 404: Error, 500: Error}, auth=GlobalAuth()
+        "/access-tokens", response={200: list[AccessTokenSchema], 404: Error, 500: Error}, auth=GlobalAuth()
     )
     def list_access_tokens(self, request):
         """

@@ -1,13 +1,12 @@
 from uuid import uuid4
 
 from django.conf import settings
-from django.db import models, transaction
+from django.db import models
 from django.utils.crypto import get_random_string
 from django.utils.timezone import now
 
 from django.utils.translation import gettext_lazy as _  # type: ignore
 from ninja_jwt.tokens import AccessToken, RefreshToken  # type: ignore
-import logging
 from datetime import timedelta as dt_timedelta
 from core import coreLogger
 # from ninja_jwt.token_blacklist import OutstandingToken
@@ -55,10 +54,10 @@ class Token(models.Model):  # type: ignore
         related_name="tokens",
     )  # todo add created_for field if the token could be created by another user who will use it!!
     preferences = models.JSONField(default=list, blank=True) # settings field # dummy
-    last_used = models.DateTimeField(null=True, blank=True) # updated on each request 
+    last_used = models.DateTimeField(null=True, blank=True) # updated on each request
     is_revoked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
-    iat = models.DateTimeField(auto_now_add=True) # created at 
+    iat = models.DateTimeField(auto_now_add=True) # created at
     exp = models.DateTimeField(null=True, blank=True) # expiration date
     saved_at = models.DateTimeField(auto_now_add=True)
     desc = models.CharField(max_length=64, null=True, blank=True)
@@ -112,7 +111,7 @@ class Token(models.Model):  # type: ignore
     @classmethod
     def create_token(
         cls, profile, raw_token: str, token_type: str, parent: "Token" = None, duration: dt_timedelta = None
-    ):  # used at controller # todo add token usage 
+    ):  # used at controller # todo add token usage
         """
         Create and persist a JWT-backed token instance.
         """
@@ -120,7 +119,7 @@ class Token(models.Model):  # type: ignore
             raise ValueError("token_type is required.")
         exp_duration = (
             duration
-            or (  # todo add to settings the default duration / with env var and use it here 
+            or (  # todo add to settings the default duration / with env var and use it here
                 dt_timedelta(minutes=15) if token_type == cls.ACCESS else dt_timedelta(days=7)
             )
         )

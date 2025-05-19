@@ -1,6 +1,4 @@
-from apis import apiLogger
-from ninja import constants
-from ninja_extra import ControllerBase, api_controller, route, permissions
+from ninja_extra import ControllerBase, api_controller, route
 from core.exceptions import Error
 from core.permissions.ninja import IsOwnerOrReadOnly
 from ..payload import auth_user

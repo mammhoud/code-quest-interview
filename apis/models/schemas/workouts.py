@@ -1,4 +1,3 @@
-from typing import Optional
 from django.utils.timezone import datetime
 from datetime import date
 from ninja import Schema, FilterSchema
@@ -9,24 +8,24 @@ class Workout(Schema):
     id: int
     title: str
     date: datetime
-    notes: Optional[str] = None
+    notes: str | None = None
     workout_type: str
-    total_exercises: Optional[int] = 0  # Only populated via annotated queryset (e.g. in get_profile_workouts)
+    total_exercises: int | None = 0  # Only populated via annotated queryset (e.g. in get_profile_workouts)
 
 
 # Patch schema for updating Workout
 class PatchWorkout(Schema):
-    title: Optional[str]
-    date: Optional[date]
-    notes: Optional[str]
-    workout_type: Optional[str]
+    title: str | None
+    date: date | None
+    notes: str | None
+    workout_type: str | None
 
 
 # Filter schema for Workout
 class _WorkoutFilter(FilterSchema):
-    title: Optional[str] | None = None
-    workout_type: Optional[str] | None = None
-    date: Optional[datetime] | None = None  # type: ignore
+    title: str | None | None = None
+    workout_type: str | None | None = None
+    date: datetime | None | None = None  # type: ignore
 
     def filter(self, queryset):
         if self.title:

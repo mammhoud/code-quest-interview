@@ -6,7 +6,7 @@ SECRET_KEY = "django-insecure-ipuq)$7$z^$*@c)&^+m-j2*s62@vvjc!0yw2bh)vjovfi-4b6x
 
 
 ALLOWED_HOSTS = [
-    "localhost",
+    "127.0.0.1",
     "127.0.0.1",
     "[::1]",
 ]
@@ -50,11 +50,11 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = (
-    "http://localhost:8000",
-    "http://localhost:8088",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8088",
 )
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://localhost:8088"]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000", "http://127.0.0.1:8088"]
 
 
 # django-allauth configurations

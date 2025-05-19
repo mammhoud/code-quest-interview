@@ -1,6 +1,5 @@
 from rest_framework import permissions
 
-from django.http import HttpRequest
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):  # drf

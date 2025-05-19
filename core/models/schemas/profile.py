@@ -1,5 +1,4 @@
 from django.utils.timezone import datetime
-from typing import Optional
 
 from ninja import FilterSchema, Schema
 
@@ -9,37 +8,37 @@ from .user import UserSchema as _User
 # Profile schema for API responses
 class PatchProfile(Schema):
     # id: int
-    user_id: Optional[int]
-    bio: Optional[str]
-    birth_date: Optional[datetime]
-    created_at: Optional[datetime]
-    full_name: Optional[str]
-    profile_image: Optional[str]
-    cover_image: Optional[str]
+    user_id: int | None
+    bio: str | None
+    birth_date: datetime | None
+    created_at: datetime | None
+    full_name: str | None
+    profile_image: str | None
+    cover_image: str | None
     language: str
-    notes: Optional[str]
+    notes: str | None
 
 
 # Profile schema for API responses
 class Profile(Schema):
     id: int
     user: _User
-    bio: Optional[str]
-    birth_date: Optional[datetime]
-    created_at: Optional[datetime]
-    full_name: Optional[str]
-    profile_image: Optional[str]
-    cover_image: Optional[str]
+    bio: str | None
+    birth_date: datetime | None
+    created_at: datetime | None
+    full_name: str | None
+    profile_image: str | None
+    cover_image: str | None
     language: str
-    notes: Optional[str]
+    notes: str | None
 
 
 # Filter schema for Profile model
 class _ProfileFilter(FilterSchema):
-    full_name: Optional[str]
-    birth_date: Optional[datetime]
-    bio: Optional[str]
-    language: Optional[str]
+    full_name: str | None
+    birth_date: datetime | None
+    bio: str | None
+    language: str | None
 
     def filter(self, queryset):
         """

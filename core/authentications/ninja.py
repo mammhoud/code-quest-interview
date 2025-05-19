@@ -1,6 +1,4 @@
-from ninja_extra import NinjaExtraAPI
 from ninja.security import HttpBearer
-from pprint import pprint
 from core.models import Token, Profile
 from .. import coreLogger as logger
 from django.utils.timezone import now

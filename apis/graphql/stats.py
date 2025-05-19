@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from graphene import Field, List, ID, Int, String
+from graphene import Field, List, ID, Int
 from ..models import Stat
 from core.models import Profile
 

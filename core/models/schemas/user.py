@@ -1,6 +1,6 @@
 # flake8: noqa
 from django.utils.timezone import datetime
-from typing import List, Optional, Type
+from typing import List, Optional, Type # noqa
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser, Group

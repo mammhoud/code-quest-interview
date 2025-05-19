@@ -1,4 +1,3 @@
-from typing import Optional, List
 from django.utils.timezone import datetime
 from ninja import Schema, FilterSchema
 
@@ -6,7 +5,7 @@ from ninja import Schema, FilterSchema
 # Minimal Profile schema for reference in Exercise
 class _Profile(Schema):
     id: int
-    full_name: Optional[str] = None
+    full_name: str | None = None
 
 
 # Minimal Workout schema for reference in Exercise
@@ -19,31 +18,31 @@ class _Workout(Schema):
 class Exercise(Schema):
     id: int
     name: str
-    description: Optional[str] = None
-    duration: Optional[int]
+    description: str | None = None
+    duration: int | None
     profile: _Profile
-    workouts: List[_Workout]
-    created_at: Optional[datetime]
-    updated_at: Optional[datetime]
+    workouts: list[_Workout]
+    created_at: datetime | None
+    updated_at: datetime | None
     # total_exercises: Optional[int] = None  # for aggregation purposes
 
 
 # Patch schema for partial update
 class PatchExercise(Schema):
-    name: Optional[str]
-    description: Optional[str]
-    duration: Optional[int]
-    profile_id: Optional[int]
+    name: str | None
+    description: str | None
+    duration: int | None
+    profile_id: int | None
     # workouts_ids: Optional[List[int]]  # You may handle this explicitly in views @ TODO add a schema for post with workouts dict insertions
-    # created_at 
+    # created_at
     # & updated_at not patchable
 
 
 # Filter schema for Exercise model
 class _ExerciseFilter(FilterSchema):
-    full_name: Optional[str] | None = None
-    duration: Optional[int] | None = None
-    profile_id: Optional[int] | None = None
+    full_name: str | None | None = None
+    duration: int | None | None = None
+    profile_id: int | None | None = None
 
     def filter(self, queryset):
         if self.duration is not None:

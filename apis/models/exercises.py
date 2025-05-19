@@ -2,7 +2,7 @@ from django.db import models
 from core.models import DefaultBase
 from django.utils.translation import gettext_lazy as _
 from ._manager import ExerciseManager
-from django.db.models.signals import post_save, post_delete, pre_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .stats import Stat
 from django.db import transaction

@@ -1,21 +1,34 @@
-# Use the official Python 3.10 image based on Alpine Linux
-FROM python:3.10-alpine
+FROM python:3.12-slim-bookworm
 
-# Set environment variables to prevent Python from writing .pyc files and buffering output
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# The installer requires curl (and certificates) to download the release archive
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
 
-# Install system dependencies
-RUN apk add --no-cache gcc musl-dev libffi-dev
+# Download the latest installer
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
 
+# Run the installer then remove it
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# Ensure the installed binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
+
+
+# VOLUME [ "/app" ]
 # Create and set the working directory
-WORKDIR /app
 
 # Copy your application files into the container
-COPY . /app
+# COPY . /app
+ADD . /app
 
+WORKDIR /app
 # Install Python dependencies
-RUN pip install pipx
-RUN pipx install uv
+# RUN pip install pipx
+# RUN pipx install uv
 
-ENTRYPOINT ["/app/run.sh"]
+# RUN pipx ensurepath
+
+# RUN uv run manage.py makemigrations
+# RUN uv run manage.py migrate
+# RUN uv run manage.py collectstatic --no-input
+
+# CMD ["uv", "run", "manage.py", "runserver"]

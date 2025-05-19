@@ -1,10 +1,6 @@
 from django.views.generic import TemplateView
-import pprint
 from apis.models import Workout
-from django.urls import reverse_lazy
 
-from django.shortcuts import redirect,resolve_url
-from django.template import RequestContext
 # from django
 
 

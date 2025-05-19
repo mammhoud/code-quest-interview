@@ -47,18 +47,18 @@ services:
   backend:
     container_name: backend
     build:
-      context: .
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - backend:/data
+      - ./:/app
     networks:
       - webserver
     restart: on-failure
     depends_on:
       - redis
       - postgres
+    entrypoint: ["/app/run.sh"]
     # env_file:
     #   - ./.env
 

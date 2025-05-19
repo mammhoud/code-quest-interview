@@ -1,22 +1,22 @@
 ###drf
-GET http://localhost:8000/workouts/ HTTP/1.1
+GET http://127.0.0.1:8000/workouts/ HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NzUwOTkzOSwiaWF0IjoxNzQ3NDIzNTM5LCJqdGkiOiI2ZDM5NDAxNGIzODQ0NDcwOTgxNGIzYTE2MGQ4YjdiYiIsInVzZXJfaWQiOjV9.K9D6MiLLTJ5axNdRmlgwzLIDFZmOvqWrHwdJBw77nrI
 
 ###drf
-GET http://localhost:8000/exercises?page=3 HTTP/1.1
+GET http://127.0.0.1:8000/exercises?page=3 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NzUwOTkzOSwiaWF0IjoxNzQ3NDIzNTM5LCJqdGkiOiI2ZDM5NDAxNGIzODQ0NDcwOTgxNGIzYTE2MGQ4YjdiYiIsInVzZXJfaWQiOjV9.K9D6MiLLTJ5axNdRmlgwzLIDFZmOvqWrHwdJBw77nrI
 
 ###ninja
-GET http://localhost:8000/exercise/list HTTP/1.1
+GET http://127.0.0.1:8000/exercise/list HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NzUwOTkzOSwiaWF0IjoxNzQ3NDIzNTM5LCJqdGkiOiI2ZDM5NDAxNGIzODQ0NDcwOTgxNGIzYTE2MGQ4YjdiYiIsInVzZXJfaWQiOjV9.K9D6MiLLTJ5axNdRmlgwzLIDFZmOvqWrHwdJBw77nrI
 
 ###ninja
-GET http://localhost:8000/workouts/list HTTP/1.1
+GET http://127.0.0.1:8000/workouts/list HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NzUwOTkzOSwiaWF0IjoxNzQ3NDIzNTM5LCJqdGkiOiI2ZDM5NDAxNGIzODQ0NDcwOTgxNGIzYTE2MGQ4YjdiYiIsInVzZXJfaWQiOjV9.K9D6MiLLTJ5axNdRmlgwzLIDFZmOvqWrHwdJBw77nrI
 
 
 ###drf
-GET http://localhost:8000/token/list HTTP/1.1
+GET http://127.0.0.1:8000/token/list HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NzUwOTkzOSwiaWF0IjoxNzQ3NDIzNTM5LCJqdGkiOiI2ZDM5NDAxNGIzODQ0NDcwOTgxNGIzYTE2MGQ4YjdiYiIsInVzZXJfaWQiOjV9.K9D6MiLLTJ5axNdRmlgwzLIDFZmOvqWrHwdJBw77nrI
 
 
