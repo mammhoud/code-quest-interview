@@ -47,4 +47,5 @@ GRAPHENE = {
     "SCHEMA": "apis.schema.schema",
     "SCHEMA_INDENT": 2,
     "MIDDLEWARE": ("graphene_django.debug.DjangoDebugMiddleware",),
+    "ATOMIC_MUTATIONS": True,
 }

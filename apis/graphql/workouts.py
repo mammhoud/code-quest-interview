@@ -2,7 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 from graphene import Field, List, ID, String, Date
 from ..models import Workout
-from core.models import Profile
+# from core.models import Profile
 
 
 class WorkoutType(DjangoObjectType):
@@ -14,7 +14,7 @@ class WorkoutType(DjangoObjectType):
 class Query(graphene.ObjectType):
     all_workouts = List(WorkoutType)
     workout_by_id = Field(WorkoutType, id=ID(required=True))
-    workouts_by_profile = List(WorkoutType, profile_id=ID(required=True))
+    workouts_by_profile = List(WorkoutType, profile_id=ID(required=False)) 
 
     def resolve_all_workouts(root, info):
         return Workout.objects.all()
@@ -35,7 +35,8 @@ class CreateWorkout(graphene.Mutation):
 
     workout = Field(WorkoutType)
 
-    def mutate(self, info, title, date, notes=None, workout_type="strength"):
+    # @classmethod
+    def mutate(self, info, title, date, notes=None, workout_type="strength", profile = None):
         workout = Workout.objects.create(
             title=title,
             date=date,

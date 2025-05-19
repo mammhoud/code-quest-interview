@@ -35,6 +35,7 @@ class CreateStat(graphene.Mutation):
 
     stat = Field(StatType)
 
+    # @classmethod
     def mutate(self, info, profile_id, total_exercises=0, total_workouts=0, evaluation=0):
         profile = Profile.objects.get(id=profile_id)
         stat = Stat.objects.create(

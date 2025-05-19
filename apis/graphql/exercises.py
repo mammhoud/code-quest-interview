@@ -3,6 +3,8 @@ from graphene_django import DjangoObjectType
 from graphene import Field, List, ID, String, Int
 from ..models import Exercise
 from core.models import Profile
+from graphql import GraphQLError
+# from graphql_jwt.decorators import login_required
 
 
 class ExerciseType(DjangoObjectType):
@@ -14,6 +16,7 @@ class ExerciseType(DjangoObjectType):
 # =======================
 # Query Class
 # =======================
+# @login_required
 class Query(graphene.ObjectType):
     all_exercises = List(ExerciseType)
     exercise_by_id = Field(ExerciseType, id=ID(required=True))
@@ -41,8 +44,13 @@ class CreateExercise(graphene.Mutation):
 
     exercise = Field(ExerciseType)
 
+    # @classmethod
     def mutate(self, info, name, profile_id, description=None, duration=None):
-        profile = Profile.objects.get(id=profile_id)
+        try:
+            profile = Profile.objects.get(id=profile_id)
+        except Profile.DoesNotExist:
+            raise GraphQLError("Profile with the given ID does not exist.")
+
         exercise = Exercise.objects.create(
             name=name, description=description, duration=duration, profile=profile
         )

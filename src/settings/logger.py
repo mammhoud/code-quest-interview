@@ -143,4 +143,4 @@ if DEBUG:
     from .debug_toolbar.setup import DebugToolbarSetup
     from .middleware import MIDDLEWARE
 
-    MIDDLEWARE = DebugToolbarSetup.update_middleware(MIDDLEWARE)
+    MIDDLEWARE = DebugToolbarSetup.update_middleware(MIDDLEWARE + logger_middleware)

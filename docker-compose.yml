@@ -37,6 +37,17 @@ services:
       - webserver
     restart: unless-stopped
 
+  redisinsight:
+    container_name: redisinsight
+    image: redislabs/redisinsight
+    ports:
+      - "5540:5540"
+    volumes:
+      - redis_data:/data
+    networks:
+      - webserver
+    restart: unless-stopped
+
 volumes:
   postgres:
   backend:

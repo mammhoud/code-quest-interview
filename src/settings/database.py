@@ -63,6 +63,7 @@ CACHEOPS = {
     "apis.stat": {"ops": "all", "timeout": 60 * 10},
     "apis.workout": {"ops": "all", "timeout": 60 * 5},
     "apis.exercise": {"ops": "all", "timeout": 60 * 10},
+    "core.token": {"ops": "all", "timeout": 60 * 10},
 }
 
 CACHEOPS_DEFAULTS = {

@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     "core",
     "apis",
     "django_structlog",
-    # "cacheops"
+    "cacheops"
 ] + [  # admin app addition tweaks { docs: https://unfoldadmin.com/docs }
     "unfold",  # before django.contrib.admin
     "unfold.contrib.filters",  # optional, if special filters are needed

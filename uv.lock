@@ -402,6 +402,21 @@ wheels = [
 ]
 
 [[package]]
+name = "django-graphql-jwt"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "graphene" },
+    { name = "graphene-django" },
+    { name = "pyjwt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a8/44/6781e0ef4438f9f8b8b0fc39d4e874659b555bc57159243faee99c66483e/django_graphql_jwt-0.4.0.tar.gz", hash = "sha256:537972519f0deeec7a0e4a306ddfed1fe385266ef61c9f78c54cd04ac01a171e", size = 20668 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/96/82/9b6e9425515ccec08894f3dbdd2b439244859c5516777a576b929eb6f854/django_graphql_jwt-0.4.0-py3-none-any.whl", hash = "sha256:5823aa8ac9bf0b7a6e3b2febd029598b332c41fe9043d89900c116fcecd23f5e", size = 47080 },
+]
+
+[[package]]
 name = "django-gulp"
 version = "4.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1735,6 +1750,7 @@ dependencies = [
     { name = "django-environ" },
     { name = "django-extensions" },
     { name = "django-filter" },
+    { name = "django-graphql-jwt" },
     { name = "django-gulp" },
     { name = "django-harlequin" },
     { name = "django-mkdocs" },
@@ -1788,6 +1804,7 @@ requires-dist = [
     { name = "django-environ", specifier = ">=0.11.2" },
     { name = "django-extensions", specifier = ">=3.2.3" },
     { name = "django-filter", specifier = ">=24.3" },
+    { name = "django-graphql-jwt", specifier = ">=0.4.0" },
     { name = "django-gulp", specifier = ">=4.1.0" },
     { name = "django-harlequin", specifier = ">=1.4.0" },
     { name = "django-mkdocs", specifier = ">=0.1.2" },
