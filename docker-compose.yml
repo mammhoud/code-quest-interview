@@ -15,16 +15,18 @@ services:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASS:-postgres}
       POSTGRES_DB: ${DB_NAME:-postgres}
-      PGDATA: /data/${DB_NAME:-postgres}-${ENVIRONMENT}
     volumes:
-      - ./docker/conf/${ENVIRONMENT}:/data/${DB_NAME:-postgres}/${ENVIRONMENT}
-    # env_file:
-    #   - ./.env
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
       - webserver
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     container_name: redis
@@ -36,19 +38,31 @@ services:
     networks:
       - webserver
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
-  redisinsight:
-    container_name: redisinsight
-    image: redislabs/redisinsight
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "5540:5540"
+      - "8000:8000"
     volumes:
-      - redis_data:/data
+      - backend:/data
     networks:
       - webserver
-    restart: unless-stopped
+    restart: on-failure
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - ./.env
 
 volumes:
-  postgres:
+  postgres_data:
   backend:
   redis_data:

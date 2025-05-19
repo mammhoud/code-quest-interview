@@ -8,7 +8,9 @@
 uv run manage.py makemigrations
 uv run manage.py migrate
 # Activate the virtual environment again and collect static files
-# uv run manage.py collectstatic --no-input
+uv run manage.py collectstatic --no-input
+
+uv run manage.py runserver
 # Start the docker containers with rebuild and remove orphans
 # sudo docker-compose up --build --remove-orphans -d
 # Show the logs of the running containers
