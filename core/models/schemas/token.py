@@ -87,7 +87,7 @@ class TokenListResponse(Schema):
 
     Attributes:
         parent (RefreshTokenSchema): The parent refresh token.
-        children (List[AccessTokenSchema]): List of associated access tokens.
+        children (list[AccessTokenSchema]): List of associated access tokens.
     """
 
     parent: RefreshTokenSchema
@@ -120,7 +120,7 @@ class ValidateToken(Schema):
     refresh_token: Optional[str]
         The parent refresh token required to rotate tokens.
 
-    access_tokens: Optional[List[str]]
+    access_tokens: Optional[list[str]]
         Optional list of child access tokens.
 
     Validation Process:

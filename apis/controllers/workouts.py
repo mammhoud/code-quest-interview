@@ -13,7 +13,7 @@ from ..models.schemas.workouts import Workout, PatchWorkout, _WorkoutFilter
 @api_controller("workout/", auth=GlobalAuth(), tags=["Workout"], permissions=[])
 class WorkoutController(ControllerBase):
     @route.get("/list", response={200: list[Workout], 404: Error}, throttle=[BurstRateThrottle()])
-    def list_workouts(self, filters: _WorkoutFilter = Query(None)):
+    def list_workouts(self, filters: _WorkoutFilter = Query(None)):  # noqa: B008
         """
         Get a list of workouts with optional filtering.
         """

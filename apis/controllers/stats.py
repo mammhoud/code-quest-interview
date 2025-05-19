@@ -13,7 +13,7 @@ from ..models.schemas.stats import Stat, PatchStat, _StatFilter
 @api_controller("stat/", auth=GlobalAuth(), tags=["Stat"], throttle=[BurstRateThrottle()])
 class StatController(ControllerBase):
     @route.get("/list", response={200: list[Stat], 404: Error})
-    def list_stats(self, filters: _StatFilter = Query(None)):
+    def list_stats(self, filters: _StatFilter = Query(None)):  # noqa: B008
         """
         Get list of stats with optional filtering.
         """

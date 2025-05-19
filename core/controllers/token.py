@@ -166,7 +166,7 @@ class TokenController(ControllerBase):
         List all active access tokens for the currently authenticated user.
 
         Returns:
-            List[AccessTokenSchema]: A list of active access token objects.
+            list[AccessTokenSchema]: A list of active access token objects.
         """
         try:
             authed_profile = self.context.request.profile

@@ -68,7 +68,7 @@ class CreateUserOutSchema(CreateUserSchema):
 class UserSchema(ModelSchema):
     """Schema to retrieve user details along with groups."""
 
-    groups: List[GroupSchema]
+    groups: list[GroupSchema]
     email: Optional[str] | None = None  # noqa
 
     class Config:

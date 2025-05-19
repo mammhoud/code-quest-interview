@@ -33,7 +33,7 @@ class PatchExercise(Schema):
     description: str | None
     duration: int | None
     profile_id: int | None
-    # workouts_ids: Optional[List[int]]  # You may handle this explicitly in views @ TODO add a schema for post with workouts dict insertions
+    # workouts_ids: Optional[list[int]]  # You may handle this explicitly in views @ TODO add a schema for post with workouts dict insertions
     # created_at
     # & updated_at not patchable
 

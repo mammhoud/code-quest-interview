@@ -1,6 +1,7 @@
 [project]
 dynamic = ["version"]
 requires-python = ">=3.10"
+# version = "0.1"
 license = "mit"
 keywords = []
 authors = [
@@ -13,7 +14,6 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -109,23 +109,12 @@ case-sensitive = true
 
 [tool.black]
 target-version = ["py311"]
-line-length = 120
+line-length = 80
 
 
 [tool.ruff]
 # Set the maximum line length to 79.
-line-length = 110
-ignore = [
-    "E501", # line too long, handled by black
-    "B905", # zip() without strict=True
-    "C901", # too complex
-    "I001", # Auto organize import
-    "F403", # Import Into if condition Block
-    "F405", # object listing on schema api blocks
-    "F811", # var with only one char (_)
-    "B904", # except str expr formatter
-    ]
-
+line-length = 80
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by docker.
 select = [
@@ -137,16 +126,24 @@ select = [
     "B",  # flake8-bugbear
     "UP", # pyupgrade
 ]
-# Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
-# overlap with the use of a formatter, like Black, but we can override this behavior by
-# explicitly adding the rule.
 
-extend-select = [
+ignore = [
     "E501", # line too long, handled by black
     "B905", # zip() without strict=True
     "C901", # too complex
     "I001", # Auto organize import
     "F403", # Import Into if condition Block
+    ]
+
+
+# Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
+# overlap with the use of a formatter, like Black, but we can override this behavior by
+# explicitly adding the rule.
+
+extend-select = [
+    "F405", # object listing on schema api blocks
+    "F811", # var with only one char (_)
+    "B904", # except str expr formatter
 ]
 
 
@@ -160,5 +157,4 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.uv]
 dev-dependencies = [
-    "appmap>=2.1.8",
 ]

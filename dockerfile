@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.11-slim-bookworm
 
 # The installer requires curl (and certificates) to download the release archive
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
@@ -13,22 +13,8 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 
 
-# VOLUME [ "/app" ]
-# Create and set the working directory
 
-# Copy your application files into the container
-# COPY . /app
 ADD . /app
 
 WORKDIR /app
-# Install Python dependencies
-# RUN pip install pipx
-# RUN pipx install uv
 
-# RUN pipx ensurepath
-
-# RUN uv run manage.py makemigrations
-# RUN uv run manage.py migrate
-# RUN uv run manage.py collectstatic --no-input
-
-# CMD ["uv", "run", "manage.py", "runserver"]

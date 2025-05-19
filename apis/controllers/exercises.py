@@ -27,8 +27,8 @@ class ExerciseController(ControllerBase):
             queryset = filters.filter(queryset) if filters else queryset
         return list(queryset)
 
-    @route.put("/bulk", response={200: List[Exercise]}, permissions=[])  # noqa: UP006
-    def bulk_create_exercises(self, request, payload: List[PatchDict[PatchExercise]]):  # noqa: B008, UP006
+    @route.put("/bulk", response={200: list[Exercise]}, permissions=[])  # noqa: UP006
+    def bulk_create_exercises(self, request, payload: list[PatchDict[PatchExercise]]):  # noqa: B008, UP006
         """
         bulk Creation of Exercises.
         """
