@@ -7,7 +7,9 @@ import environ
 # Initialize environment reader
 env = environ.Env()
 environ.Env.read_env()  # This reads the .env file
-
+'''
+note at .env file update the localhost host name with  docker host name if it running at docker 
+'''
 class Environment(Enum):
     DEVELOPMENT = "dev"
     TESTING = "test"

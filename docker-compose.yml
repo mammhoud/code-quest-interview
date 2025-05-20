@@ -17,6 +17,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASS:-postgres}
       POSTGRES_DB: ${DB_NAME:-postgres}
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -24,11 +25,6 @@ services:
     networks:
       - web-network
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD-SHELL", "pg_isready -U postgres"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
 
   redis:
     container_name: redis
@@ -40,11 +36,6 @@ services:
     networks:
       - web-network
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "redis-cli", "ping"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 3
 
   backend:
     container_name: backend
@@ -56,13 +47,14 @@ services:
       - ./:/app
     networks:
       - web-network
+    environment:
+      DB_HOST: postgres
+      CACHES_HOST: redis
     restart: on-failure
     depends_on:
       - redis
       - postgres
-    entrypoint: ["/app/run.sh"]
-    # env_file:
-    #   - ./.env
+    entrypoint: [ "/app/run.sh" ]
 
 volumes:
   postgres_data:
