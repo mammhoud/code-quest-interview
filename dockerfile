@@ -15,7 +15,8 @@ ENV PATH="/root/.local/bin/:$PATH"
 
 
 ADD . /app
+RUN chmod +x /app/run.sh
 
 WORKDIR /app
 
-ENTRYPOINT ["/app/run.sh"]
+CMD ["sh", "-c", "/app/run.sh"]

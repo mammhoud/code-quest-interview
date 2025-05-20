@@ -55,6 +55,8 @@ services:
       - redis
       - postgres
     entrypoint: [ "/app/run.sh" ]
+    
+
 
 volumes:
   postgres_data:
