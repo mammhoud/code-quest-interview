@@ -18,3 +18,4 @@ ADD . /app
 
 WORKDIR /app
 
+ENTRYPOINT ["/app/run.sh"]
