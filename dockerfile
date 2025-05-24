@@ -14,7 +14,7 @@ ENV PATH="/root/.local/bin/:$PATH"
 
 
 
-ADD . /app
+COPY . /app
 RUN chmod +x /app/run.sh
 
 WORKDIR /app
