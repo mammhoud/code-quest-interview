@@ -155,13 +155,6 @@ Represents a workout session, containing multiple exercises and metadata.
   * Token validation with precise exception logging to enhance security.
   * Full integration with Django Ninja and global authentication support.
 
-
----
-
-## Demo
-
-[Watch the demo video](https://drive.google.com/file/d/1U1N0KG5v0uqIyItskfBlW8-yArhdhSPg/view?usp=sharing)
-
 ---
 
 ## Contact and Support
