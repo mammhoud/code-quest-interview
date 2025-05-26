@@ -1,4 +1,4 @@
-# using django with apis
+# Using django with apis
 
 This project is a complete Django application built with **Django REST Framework** and **Django Ninja**, featuring advanced admin customization using **Django Unfold**, along with a secure JWT token management system including token rotation and revocation to support advanced authentication scenarios.
 
